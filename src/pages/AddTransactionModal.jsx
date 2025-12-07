@@ -1,0 +1,94 @@
+import React from "react";
+import { X } from "lucide-react";
+
+const AddTransactionModal = ({ onClose }) => {
+  return (
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center px-4">
+      <div className="bg-white w-full max-w-md rounded-xl p-6 shadow-xl">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="font-semibold text-lg">Add Transaction</h2>
+          <button onClick={onClose}>
+            <X size={22} className="text-gray-600" />
+          </button>
+        </div>
+
+        {/* Type */}
+        <div className="mb-4">
+          <label className="font-medium">Type</label>
+          <div className="flex gap-6 mt-2">
+            <label className="flex items-center gap-2">
+              <input type="radio" name="type" defaultChecked /> Expense
+            </label>
+
+            <label className="flex items-center gap-2">
+              <input type="radio" name="type" /> Income
+            </label>
+          </div>
+        </div>
+
+        {/* Amount */}
+        <div className="mb-4">
+          <label className="font-medium">Amount *</label>
+          <input
+            type="number"
+            placeholder="0.00"
+            className="border px-3 py-2 rounded-lg w-full mt-1"
+          />
+        </div>
+
+        {/* Category */}
+        <div className="mb-4">
+          <label className="font-medium">Category *</label>
+          <select className="border px-3 py-2 rounded-lg w-full mt-1">
+            <option>Select category</option>
+          </select>
+        </div>
+
+        {/* Date */}
+        <div className="mb-4">
+          <label className="font-medium">Date</label>
+          <input
+            type="date"
+            className="border px-3 py-2 rounded-lg w-full mt-1"
+          />
+        </div>
+
+        {/* Payment Method */}
+        <div className="mb-4">
+          <label className="font-medium">Payment Method</label>
+          <select className="border px-3 py-2 rounded-lg w-full mt-1">
+            <option>Cash</option>
+            <option>Card</option>
+            <option>UPI</option>
+          </select>
+        </div>
+
+        {/* Notes */}
+        <div className="mb-4">
+          <label className="font-medium">Notes</label>
+          <textarea
+            className="border px-3 py-2 rounded-lg w-full mt-1"
+            placeholder="Add any additional notes..."
+          ></textarea>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex justify-end gap-3 mt-6">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 border rounded-lg"
+          >
+            Cancel
+          </button>
+
+          <button className="px-4 py-2 bg-black text-white rounded-lg">
+            Add Transaction
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AddTransactionModal;
