@@ -1,24 +1,6 @@
 const Goal = require("../models/Goal");
 
 // Create New Goal
-exports.createGoal = async (req, res) => {
-  try {
-    const { name, targetAmount, deadline, userId } = req.body;
-
-    const newGoal = await Goal.create({
-      name,
-      targetAmount,
-      deadline,
-      userId,
-      currentAmount: 0
-    });
-
-    res.json(newGoal);
-  } catch (err) {
-    console.log("Create Goal Error:", err);
-    res.status(500).json({ msg: "Failed to save goal" });
-  }
-};
 
 // Get All Goals for a user
 exports.getGoals = async (req, res) => {

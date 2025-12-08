@@ -14,7 +14,7 @@ const AddGoalModal = ({ onClose }) => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/goals/add", {
+      const res = await axios.post("http://localhost:5000/api/goals", {
         name,
         targetAmount,
         deadline,
