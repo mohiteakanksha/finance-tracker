@@ -23,4 +23,14 @@ router.post("/add", async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const budgets = await Budget.find();
+    res.json(budgets);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 module.exports = router;

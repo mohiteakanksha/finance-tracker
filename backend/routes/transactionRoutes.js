@@ -20,5 +20,16 @@ router.post("/add", async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 });
+// GET ALL TRANSACTIONS
+router.get("/", async (req, res) => {
+  try {
+    const transactions = await Transaction.find();
+    res.json(transactions);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 
 module.exports = router;
