@@ -1,36 +1,34 @@
 const express = require("express");
 const Budget = require("../models/Budget");
+const auth = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post("/add", async (req, res) => {
+// ADD budget (user-specific)
+router.post("/add", auth, async (req, res) => {
   try {
-    console.log("Received:", req.body);
-
     const newBudget = new Budget({
       category: req.body.category,
       amount: req.body.amount,
       period: req.body.period,
-      userId: req.body.userId || null,
+      userId: req.userId, // 🔥 Real logged-in user ID
     });
 
     await newBudget.save();
     return res.json({ success: true });
-
   } catch (error) {
-    console.log("ERROR:", error);
     res.status(500).json({ error: error.message });
   }
 });
 
-router.get("/", async (req, res) => {
+// GET budgets of logged in user
+router.get("/", auth, async (req, res) => {
   try {
-    const budgets = await Budget.find();
+    const budgets = await Budget.find({ userId: req.userId }); // 🔥 Filter by user
     res.json(budgets);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 module.exports = router;

@@ -1,7 +1,8 @@
+// src/pages/Login.jsx
 import { Mail, Lock, Wallet } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../axiosConfig";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,9 +11,6 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  // ===========================
-  // LOGIN (SIGN-IN FUNCTION)
-  // ===========================
   const handleLogin = async () => {
     if (!email || !password) {
       alert("Please fill all fields!");
@@ -20,12 +18,18 @@ export default function Login() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/signin", {
+      const res = await api.post("/auth/signin", {
         email,
         password,
       });
 
       if (res.data.success) {
+        localStorage.setItem("token", res.data.token);
+
+        if (res.data.user) {
+          localStorage.setItem("userId", res.data.user._id);
+        }
+
         alert("Login Successful!");
         navigate("/dashboard");
       } else {

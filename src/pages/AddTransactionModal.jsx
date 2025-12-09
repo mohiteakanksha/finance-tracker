@@ -3,7 +3,6 @@ import { X } from "lucide-react";
 import axios from "axios";
 
 const AddTransactionModal = ({ onClose }) => {
-  // --- STATES ---
   const [type, setType] = useState("expense");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
@@ -11,30 +10,40 @@ const AddTransactionModal = ({ onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState("Cash");
   const [notes, setNotes] = useState("");
 
-  // --- SUBMIT ---
-  const handleSubmit = async () => {
-    if (!amount || !category) {
-      alert("Amount & Category are required!");
-      return;
-    }
+  const token = localStorage.getItem("token");
 
-    try {
-      await axios.post("http://localhost:5000/api/transactions/add", {
+  const handleSubmit = async () => {
+  if (!amount || category === "Select category") {
+    alert("Amount & valid Category are required!");
+    return;
+  }
+
+  try {
+    await axios.post(
+      "http://localhost:5000/api/transactions/add",
+      {
         type,
-        amount: Number(amount),
+        amount: Number(amount),   // FIXED
         category,
         date,
         paymentMethod,
         notes,
-      });
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-      alert("Transaction Added Successfully!");
-      onClose();
-    } catch (err) {
-      console.log(err.response?.data || err);
-      alert("Failed to add transaction");
-    }
-  };
+    alert("Transaction Added Successfully!");
+    onClose();
+  } catch (err) {
+    console.log(err.response?.data);
+    alert("Failed to add transaction");
+  }
+};
+
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center px-4">

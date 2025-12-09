@@ -1,13 +1,29 @@
 const Goal = require("../models/Goal");
 
 // Create New Goal
-
-// Get All Goals for a user
-exports.getGoals = async (req, res) => {
+const createGoal = async (req, res) => {
   try {
-    const { userId } = req.query; // frontend must send userId in URL query
+    const { name, targetAmount, deadline } = req.body;
 
-    const goals = await Goal.find({ userId });
+    const newGoal = await Goal.create({
+      name,
+      targetAmount,
+      deadline,
+      userId: req.userId,
+      currentAmount: 0
+    });
+
+    res.json(newGoal);
+  } catch (err) {
+    console.log("Create Goal Error:", err);
+    res.status(500).json({ msg: "Failed to save goal" });
+  }
+};
+
+// Get All Goals
+const getGoals = async (req, res) => {
+  try {
+    const goals = await Goal.find({ userId: req.userId });
     res.json(goals);
   } catch (err) {
     console.log("Get Goals Error:", err);
@@ -15,12 +31,16 @@ exports.getGoals = async (req, res) => {
   }
 };
 
-// Add Money to a goal
-exports.addMoneyToGoal = async (req, res) => {
+// Add Money to Goal
+const addMoneyToGoal = async (req, res) => {
   try {
     const { amount } = req.body;
 
-    const goal = await Goal.findById(req.params.id);
+    const goal = await Goal.findOne({
+      _id: req.params.id,
+      userId: req.userId
+    });
+
     if (!goal) return res.status(404).json({ msg: "Goal not found" });
 
     goal.currentAmount += Number(amount);
@@ -32,3 +52,5 @@ exports.addMoneyToGoal = async (req, res) => {
     res.status(500).json({ msg: "Failed to update goal" });
   }
 };
+
+module.exports = { createGoal, getGoals, addMoneyToGoal };

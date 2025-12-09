@@ -14,11 +14,14 @@ const AddGoalModal = ({ onClose }) => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/goals", {
-        name,
-        targetAmount,
-        deadline,
-      });
+      const res = await axios.post(
+  "http://localhost:5000/api/goals",
+  { name, targetAmount, deadline },
+  {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+  }
+);
+
 
       console.log(res.data);
       alert("Goal Saved!");

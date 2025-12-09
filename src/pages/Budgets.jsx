@@ -9,14 +9,20 @@ const Budgets = () => {
   const [open, setOpen] = useState(false);
   const [budgets, setBudgets] = useState([]);
 
-  const fetchBudgets = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/budgets");
-      setBudgets(res.data);
-    } catch (err) {
-      console.log("Error fetching budgets:", err);
-    }
-  };
+  const token = localStorage.getItem("token");
+
+const fetchBudgets = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/api/budgets", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    setBudgets(res.data);
+  } catch (err) {
+    console.log("Error fetching budgets:", err);
+  }
+};
+
 
   useEffect(() => {
     fetchBudgets();
@@ -30,7 +36,6 @@ const Budgets = () => {
         <Navbar />
 
         <div className="p-16">
-
           <h2 className="text-xl font-semibold">Budget Management</h2>
           <p className="text-gray-500 mb-6">Set and track category-wise budgets</p>
 
@@ -39,7 +44,7 @@ const Budgets = () => {
 
             <button
               onClick={() => setOpen(true)}
-              className="bg-black text-white px-4 py-2 rounded-lg flex items-center gap-2"
+              className="bg-black text-white px-4 py-2 rounded-lg"
             >
               + Add Budget
             </button>
@@ -47,9 +52,8 @@ const Budgets = () => {
 
           {/* Budgets Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-
             {budgets.map((b) => {
-              const spent = 0; // later calculate from transactions
+              const spent = 0; 
               const percentUsed = (spent / b.amount) * 100;
               const remaining = b.amount - spent;
 
@@ -58,7 +62,6 @@ const Budgets = () => {
                   key={b._id}
                   className="bg-white shadow-sm border rounded-xl p-6 relative"
                 >
-                  {/* Delete icon */}
                   <button className="absolute top-4 right-4 text-red-500">
                     <Trash2 size={18} />
                   </button>
@@ -66,12 +69,10 @@ const Budgets = () => {
                   <h3 className="text-lg font-semibold">{b.category}</h3>
                   <p className="text-gray-500">{b.period}</p>
 
-                  {/* Spent */}
                   <p className="mt-4 text-gray-700">
                     Spent <span className="float-right font-semibold">₹{spent} / ₹{b.amount}</span>
                   </p>
 
-                  {/* Progress Bar */}
                   <div className="w-full bg-gray-200 h-2 rounded-lg mt-2">
                     <div
                       className="h-2 bg-black rounded-lg"
@@ -81,15 +82,12 @@ const Budgets = () => {
 
                   <p className="text-gray-500 text-sm mt-1">{percentUsed.toFixed(0)}% used</p>
 
-                  {/* Remaining */}
-                  <div className="bg-green-100 text-green-700 mt-4 p-3 rounded-lg flex items-center gap-2">
-                    <span>✔</span>
-                    <span className="font-medium">₹{remaining} remaining</span>
+                  <div className="bg-green-100 text-green-700 mt-4 p-3 rounded-lg">
+                    ₹{remaining} remaining
                   </div>
                 </div>
               );
             })}
-
           </div>
         </div>
       </div>

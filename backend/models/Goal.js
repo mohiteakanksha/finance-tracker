@@ -6,7 +6,7 @@ const goalSchema = new mongoose.Schema(
     targetAmount: { type: Number, required: true },
     deadline: { type: Date },
     currentAmount: { type: Number, default: 0 },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
   },
   { timestamps: true }
 );

@@ -1,40 +1,73 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 
-const AddInvestmentModal = ({ onClose }) => {
+const AddInvestmentModal = ({ onClose, reloadInvestments }) => {
   const [name, setName] = useState("");
   const [type, setType] = useState("Mutual Fund");
   const [invested, setInvested] = useState("");
   const [currentValue, setCurrentValue] = useState("");
   const [date, setDate] = useState("");
 
+  const token = localStorage.getItem("token");
+
+  const handleAddInvestment = async () => {
+    if (!token) return alert("Login again!");
+
+    const investmentData = {
+      name,
+      type,
+      amountInvested: Number(invested),
+      currentValue: Number(currentValue),
+      investmentDate: date,
+    };
+
+    try {
+      const res = await fetch("http://localhost:5000/api/investments/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(investmentData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Investment Added!");
+        reloadInvestments();   // ⭐ Refresh list automatically
+        onClose();
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert("Server Error");
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-      <div className="bg-white w-[500px] p-6 rounded-xl shadow-xl relative">
-
-        {/* Modal Header */}
+      <div className="bg-white w-[500px] p-6 rounded-xl shadow-xl">
         <div className="flex justify-between items-center mb-5">
           <h2 className="text-xl font-semibold">Add Investment</h2>
           <X className="cursor-pointer" onClick={onClose} />
         </div>
 
-        {/* Form */}
         <div className="space-y-4">
           <div>
-            <label className="text-gray-600 text-sm">Investment Name *</label>
+            <label>Investment Name *</label>
             <input
               type="text"
-              placeholder="e.g., HDFC Mutual Fund"
-              className="w-full border rounded-lg px-3 py-2 mt-1 outline-none"
+              className="w-full border rounded-lg px-3 py-2 mt-1"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
 
           <div>
-            <label className="text-gray-600 text-sm">Type *</label>
+            <label>Type *</label>
             <select
-              className="w-full border rounded-lg px-3 py-2 mt-1 outline-none bg-gray-50"
+              className="w-full border rounded-lg px-3 py-2 mt-1"
               value={type}
               onChange={(e) => setType(e.target.value)}
             >
@@ -42,51 +75,51 @@ const AddInvestmentModal = ({ onClose }) => {
               <option>Stock</option>
               <option>Gold</option>
               <option>Crypto</option>
-              <option>Fixed Deposit</option>
+              <option>FD</option>
+              <option>Other</option>
             </select>
           </div>
 
           <div>
-            <label className="text-gray-600 text-sm">Amount Invested *</label>
+            <label>Amount Invested *</label>
             <input
               type="number"
-              className="w-full border rounded-lg px-3 py-2 mt-1 outline-none"
+              className="w-full border rounded-lg px-3 py-2 mt-1"
               value={invested}
               onChange={(e) => setInvested(e.target.value)}
             />
           </div>
 
           <div>
-            <label className="text-gray-600 text-sm">Current Value *</label>
+            <label>Current Value *</label>
             <input
               type="number"
-              className="w-full border rounded-lg px-3 py-2 mt-1 outline-none"
+              className="w-full border rounded-lg px-3 py-2 mt-1"
               value={currentValue}
               onChange={(e) => setCurrentValue(e.target.value)}
             />
           </div>
 
           <div>
-            <label className="text-gray-600 text-sm">Investment Date</label>
+            <label>Date *</label>
             <input
               type="date"
-              className="w-full border rounded-lg px-3 py-2 mt-1 outline-none"
+              className="w-full border rounded-lg px-3 py-2 mt-1"
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="flex justify-end gap-3 mt-6">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 rounded-lg border"
-          >
+          <button onClick={onClose} className="px-4 py-2 border rounded-lg">
             Cancel
           </button>
 
-          <button className="px-4 py-2 bg-black text-white rounded-lg">
+          <button
+            onClick={handleAddInvestment}
+            className="px-4 py-2 bg-black text-white rounded-lg"
+          >
             Add Investment
           </button>
         </div>

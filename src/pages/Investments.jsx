@@ -1,32 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
-import { Plus, TrendingUp } from "lucide-react";
+import { Plus, TrendingUp, Trash2 } from "lucide-react";
 import AddInvestmentModal from "./AddInvestmentModal";
 
 const Investments = () => {
   const [open, setOpen] = useState(false);
+  const [investments, setInvestments] = useState([]);
+
+  // Calculate totals
+  const totalInvested = investments.reduce((sum, i) => sum + i.amountInvested, 0);
+  const totalCurrent = investments.reduce((sum, i) => sum + i.currentValue, 0);
+  const totalReturns = totalCurrent - totalInvested;
+  const totalReturnPercent =
+    totalInvested > 0 ? ((totalReturns / totalInvested) * 100).toFixed(2) : 0;
+
+  const loadInvestments = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const res = await fetch("http://localhost:5000/api/investments", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await res.json();
+    setInvestments(data);
+  };
+
+  const deleteInvestment = async (id) => {
+    const token = localStorage.getItem("token");
+    if (!window.confirm("Delete this investment?")) return;
+
+    const res = await fetch(`http://localhost:5000/api/investments/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.ok) loadInvestments();
+  };
+
+  useEffect(() => {
+    loadInvestments();
+  }, []);
 
   return (
-     <div className="min-h-screen w-screen flex bg-gradient-to-br from-white to-purple-100">
-
-
-      {/* Sidebar */}
+    <div className="min-h-screen w-screen flex bg-gradient-to-br from-white to-purple-100">
       <Sidebar />
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-screen">
-
-        {/* Navbar */}
+      <div className="flex-1 flex flex-col">
         <Navbar />
 
-        {/* Actual Page Content */}
-        <div className="p-28">
+        <div className="p-20">
 
-          {/* Header Section */}
-          <div className="flex justify-between items-center mb-8">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-10">
             <div>
-              <h2 className="text-xl font-semibold">Investment Portfolio</h2>
+              <h2 className="text-2xl font-semibold">Investment Portfolio</h2>
               <p className="text-gray-500 text-sm">
                 Track your investments and returns
               </p>
@@ -34,53 +63,106 @@ const Investments = () => {
 
             <button
               onClick={() => setOpen(true)}
-              className="bg-black text-white px-4 py-2 rounded-lg flex items-center gap-2"
+              className="bg-black text-white px-5 py-2 rounded-lg flex items-center gap-2"
             >
               <Plus size={18} /> Add Investment
             </button>
           </div>
 
           {/* Summary Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-            {/* Total Invested */}
-            <div className="border rounded-xl p-5 bg-white">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+
+            <div className="border rounded-xl p-6 bg-white shadow-md">
               <p className="text-gray-500 text-sm">Total Invested</p>
-              <h3 className="text-2xl font-semibold mt-2">₹0</h3>
+              <h3 className="text-3xl font-semibold mt-2">₹{totalInvested.toLocaleString()}</h3>
             </div>
 
-            {/* Current Value */}
-            <div className="border rounded-xl p-5 bg-white">
+            <div className="border rounded-xl p-6 bg-white shadow-md">
               <p className="text-gray-500 text-sm">Current Value</p>
-              <h3 className="text-2xl font-semibold mt-2">₹0</h3>
+              <h3 className="text-3xl font-semibold mt-2">₹{totalCurrent.toLocaleString()}</h3>
             </div>
 
-            {/* Returns */}
-            <div className="border rounded-xl p-5 bg-white">
+            <div className="border rounded-xl p-6 bg-white shadow-md">
               <p className="text-gray-500 text-sm">Total Returns</p>
-              <h3 className="text-2xl font-semibold text-green-600 mt-2">
-                +₹0
+              <h3 className="text-3xl font-semibold text-green-600 mt-2">
+                +₹{totalReturns.toLocaleString()}
               </h3>
-              <p className="text-green-500 text-xs">+0.00%</p>
+              <p className="text-green-500 text-xs">+{totalReturnPercent}%</p>
             </div>
           </div>
 
-          {/* Empty State Box */}
-          <div className="border bg-white rounded-xl h-[350px] flex items-center justify-center text-center">
-            <div>
-              <TrendingUp size={40} className="mx-auto text-gray-400" />
-              <p className="text-gray-600 mt-4 font-medium">
-                No investments tracked
-              </p>
-              <p className="text-gray-500 text-sm">
-                Add your first investment to start tracking
-              </p>
-            </div>
-          </div>
+          {/* Investment List */}
+          <div className="bg-white rounded-xl p-6 shadow-md">
 
+            <h3 className="text-lg font-semibold mb-4">Your Investments</h3>
+
+            {investments.length === 0 ? (
+              <div className="text-center py-10 text-gray-600">
+                <TrendingUp className="mx-auto text-gray-400" size={40} />
+                <p className="mt-3 font-medium">No investments yet</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {investments.map((inv) => {
+                  const returns = inv.currentValue - inv.amountInvested;
+                  const returnPercent =
+                    ((returns / inv.amountInvested) * 100).toFixed(2);
+
+                  return (
+                    <div
+                      key={inv._id}
+                      className="flex justify-between items-center border rounded-xl p-5 bg-gray-50"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="bg-green-100 p-3 rounded-full">
+                          <TrendingUp className="text-green-700" />
+                        </div>
+
+                        <div>
+                          <p className="text-lg font-semibold">{inv.name}</p>
+                          <span className="text-xs bg-gray-200 px-2 py-1 rounded-full">
+                            {inv.type}
+                          </span>
+                          <p className="text-gray-600 text-sm mt-1">
+                            Invested: ₹{inv.amountInvested.toLocaleString()}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="text-right">
+                        <p className="font-semibold">
+                          ₹{inv.currentValue.toLocaleString()}
+                        </p>
+                        <p
+                          className={`text-sm ${
+                            returns >= 0 ? "text-green-600" : "text-red-600"
+                          }`}
+                        >
+                          {returns >= 0 ? "+" : ""}
+                          {returnPercent}% 
+                        </p>
+                      </div>
+
+                      <Trash2
+                        size={20}
+                        className="text-red-500 cursor-pointer"
+                        onClick={() => deleteInvestment(inv._id)}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {open && <AddInvestmentModal onClose={() => setOpen(false)} />}
+      {open && (
+        <AddInvestmentModal
+          onClose={() => setOpen(false)}
+          reloadInvestments={loadInvestments}
+        />
+      )}
     </div>
   );
 };

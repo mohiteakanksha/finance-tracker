@@ -9,6 +9,8 @@ const authRoutes = require("./routes/authRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
 const budgetRoutes = require("./routes/budgetRoutes");   
 const goalRoutes = require("./routes/goalRoutes");
+const investmentRoutes = require("./routes/investmentRoutes");
+
 
 const app = express();
 app.use(express.json());
@@ -18,7 +20,10 @@ app.use(cors());
 app.use("/api/auth", authRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/budgets", budgetRoutes);   
-app.use("/api/goals", goalRoutes); // <-- ADD THIS
+app.use("/api/goals", require("./routes/goalRoutes"));
+app.use("/api/investments", investmentRoutes);
+
+
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))

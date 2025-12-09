@@ -1,13 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const {
-  createGoal,
-  getGoals,
-  addMoneyToGoal
-} = require("../controllers/goalController");
 
-router.post("/", createGoal); // Save goal
-router.get("/", getGoals); // Get all goals for a user
-router.post("/add-money/:id", addMoneyToGoal); // Update savings
+const auth = require("../middleware/authMiddleware");
+const { createGoal, getGoals, addMoneyToGoal } = require("../controllers/goalController");
+
+router.post("/", auth, createGoal);
+router.get("/", auth, getGoals);
+router.post("/add-money/:id", auth, addMoneyToGoal);
 
 module.exports = router;

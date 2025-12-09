@@ -15,7 +15,11 @@ const Savings = () => {
   // Fetch goals
   const fetchGoals = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/goals");
+      const res = await axios.get("http://localhost:5000/api/goals", {
+  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+});
+
+
       setGoals(res.data);
       console.log("GOALS:", res.data);
     } catch (err) {
@@ -35,12 +39,14 @@ const Savings = () => {
     }
 
     try {
-      await axios.post(
-        `http://localhost:5000/api/goals/add-money/${selectedGoal._id}`,
-        {
-          amount: Number(amountToAdd),
-        }
-      );
+    await axios.post(
+  `http://localhost:5000/api/goals/add-money/${selectedGoal._id}`,
+  { amount: Number(amountToAdd) },
+  {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+  }
+);
+
 
       setOpenAddMoney(false);
       setAmountToAdd("");

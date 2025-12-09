@@ -3,7 +3,6 @@ import { X, ChevronDown } from "lucide-react";
 import axios from "axios";
 
 const CreateBudgetModal = ({ onClose }) => {
-  // State
   const [category, setCategory] = useState("");
   const [showCategoryList, setShowCategoryList] = useState(false);
 
@@ -23,7 +22,9 @@ const CreateBudgetModal = ({ onClose }) => {
 
   const periods = ["Monthly", "Weekly", "Yearly"];
 
-  // Submit handler
+  const token = localStorage.getItem("token");
+
+  // Submit Budget
   const handleSubmit = async () => {
     if (!category || !amount) {
       alert("Please fill all fields");
@@ -31,15 +32,17 @@ const CreateBudgetModal = ({ onClose }) => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/budgets/add", {
-        category,
-        amount,
-        period,
-        userId: "674d1234abcd5678ef901234", // you can replace with logged-in user ID
-      });
+      await axios.post(
+        "http://localhost:5000/api/budgets/add",
+        { category, amount, period },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       alert("Budget added successfully");
       onClose();
+
     } catch (error) {
       console.error(error);
       alert("Error adding budget");
@@ -48,10 +51,9 @@ const CreateBudgetModal = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-
       <div className="bg-white w-[450px] rounded-xl shadow-xl p-6 relative">
 
-        {/* Close Button */}
+        {/* Close */}
         <button className="absolute top-4 right-4" onClick={onClose}>
           <X size={20} />
         </button>
@@ -61,22 +63,21 @@ const CreateBudgetModal = ({ onClose }) => {
 
         {/* Form */}
         <div className="mt-5 flex flex-col gap-4">
-
+          
           {/* Category */}
           <div className="relative">
             <label className="text-sm font-medium">Category *</label>
 
             <div
-              className="border rounded-lg px-4 py-2 flex justify-between items-center mt-1 text-gray-600 cursor-pointer"
+              className="border rounded-lg px-4 py-2 flex justify-between items-center mt-1 cursor-pointer"
               onClick={() => setShowCategoryList(!showCategoryList)}
             >
               {category || "Select category"}
               <ChevronDown size={18} />
             </div>
 
-            {/* Dropdown */}
             {showCategoryList && (
-              <div className="absolute bg-white border rounded-lg w-full mt-1 shadow-md z-10">
+              <div className="absolute bg-white border rounded-lg w-full mt-1 shadow-md">
                 {categories.map((cat) => (
                   <div
                     key={cat}
@@ -99,7 +100,7 @@ const CreateBudgetModal = ({ onClose }) => {
             <input
               type="number"
               placeholder="0.00"
-              className="border rounded-lg px-4 py-2 mt-1 w-full outline-none"
+              className="border rounded-lg px-4 py-2 mt-1 w-full"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
@@ -110,7 +111,7 @@ const CreateBudgetModal = ({ onClose }) => {
             <label className="text-sm font-medium">Period</label>
 
             <div
-              className="border rounded-lg px-4 py-2 flex justify-between items-center mt-1 text-gray-600 cursor-pointer"
+              className="border rounded-lg px-4 py-2 flex justify-between items-center mt-1 cursor-pointer"
               onClick={() => setShowPeriodList(!showPeriodList)}
             >
               {period}
@@ -118,7 +119,7 @@ const CreateBudgetModal = ({ onClose }) => {
             </div>
 
             {showPeriodList && (
-              <div className="absolute bg-white border rounded-lg w-full mt-1 shadow-md z-10">
+              <div className="absolute bg-white border rounded-lg w-full mt-1 shadow-md">
                 {periods.map((per) => (
                   <div
                     key={per}
@@ -137,10 +138,7 @@ const CreateBudgetModal = ({ onClose }) => {
 
           {/* Buttons */}
           <div className="flex justify-end gap-3 mt-4">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 rounded-lg border"
-            >
+            <button onClick={onClose} className="px-4 py-2 rounded-lg border">
               Cancel
             </button>
 
@@ -152,6 +150,7 @@ const CreateBudgetModal = ({ onClose }) => {
             </button>
           </div>
         </div>
+
       </div>
     </div>
   );
