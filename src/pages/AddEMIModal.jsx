@@ -1,17 +1,45 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
+import axios from "../axiosConfig";
 
-const AddEMIModal = ({ onClose }) => {
+const AddEMIModal = ({ onClose, reloadEMIs }) => {
   const [formData, setFormData] = useState({
     loanName: "",
-    principal: "",
-    rate: "",
-    tenure: "",
+    principalAmount: "",
+    interestRate: "",
+    tenureMonths: "",
     startDate: "",
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.post(
+        "/emi/add",
+        {
+          loanName: formData.loanName,
+          principalAmount: Number(formData.principalAmount),
+          interestRate: Number(formData.interestRate),
+          tenureMonths: Number(formData.tenureMonths),
+          startDate: formData.startDate,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      reloadEMIs(); // refresh EMI list on main page
+      onClose();
+    } catch (error) {
+      console.error("Error adding EMI:", error);
+    }
   };
 
   return (
@@ -49,9 +77,9 @@ const AddEMIModal = ({ onClose }) => {
             <label className="text-sm font-medium">Principal Amount *</label>
             <input
               type="number"
-              name="principal"
+              name="principalAmount"
               placeholder="0.00"
-              value={formData.principal}
+              value={formData.principalAmount}
               onChange={handleChange}
               className="w-full border rounded-lg px-3 py-2 mt-1 text-sm"
             />
@@ -61,9 +89,9 @@ const AddEMIModal = ({ onClose }) => {
             <label className="text-sm font-medium">Interest Rate (% p.a.) *</label>
             <input
               type="number"
-              name="rate"
+              name="interestRate"
               placeholder="e.g., 10.5"
-              value={formData.rate}
+              value={formData.interestRate}
               onChange={handleChange}
               className="w-full border rounded-lg px-3 py-2 mt-1 text-sm"
             />
@@ -73,9 +101,9 @@ const AddEMIModal = ({ onClose }) => {
             <label className="text-sm font-medium">Tenure (Months) *</label>
             <input
               type="number"
-              name="tenure"
+              name="tenureMonths"
               placeholder="e.g., 24"
-              value={formData.tenure}
+              value={formData.tenureMonths}
               onChange={handleChange}
               className="w-full border rounded-lg px-3 py-2 mt-1 text-sm"
             />
@@ -102,7 +130,10 @@ const AddEMIModal = ({ onClose }) => {
             Cancel
           </button>
 
-          <button className="px-4 py-2 rounded-lg bg-black text-white">
+          <button
+            onClick={handleSubmit}
+            className="px-4 py-2 rounded-lg bg-black text-white"
+          >
             Add EMI
           </button>
         </div>

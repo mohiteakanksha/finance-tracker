@@ -6,28 +6,38 @@ const jwt = require("jsonwebtoken");
 exports.signup = async (req, res) => {
   try {
     console.log("Signup request body:", req.body);
-    const { username, email, password } = req.body;
 
-    if (!username || !email || !password)
-      return res.status(400).json({ success: false, message: "All fields are required" });
+    const { name, email, password } = req.body;  // FIXED: frontend sends name, not username
+
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
 
     // Check if email exists
     const existingUser = await User.findOne({ email });
-    if (existingUser)
-      return res.status(400).json({ success: false, message: "Email already registered" });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already registered",
+      });
+    }
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create user
     const user = await User.create({
-      username,
+      username: name,   // FIXED: save name as username
       email,
       password: hashedPassword,
     });
 
-    // Create JWT
+    // Create JWT token
     const token = jwt.sign(
-      { id: user._id }, // FIXED: use id, not userId
+      { id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -36,7 +46,7 @@ exports.signup = async (req, res) => {
     const safeUser = {
       id: user._id,
       username: user.username,
-      email: user.email
+      email: user.email,
     };
 
     res.status(201).json({
@@ -45,6 +55,7 @@ exports.signup = async (req, res) => {
       user: safeUser,
       token,
     });
+
   } catch (err) {
     res.status(400).json({
       success: false,
