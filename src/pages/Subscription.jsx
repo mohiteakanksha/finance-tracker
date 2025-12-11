@@ -1,71 +1,140 @@
-import React, { useState } from "react";
-import Navbar from "./Navbar";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
+import { Plus, Trash2 } from "lucide-react";
 import AddSubscriptionModal from "./AddSubscriptionModal";
+import api from "../axiosConfig";
 
-const Subscriptions = () => {
+import getSubscriptionIcon from "../utils/subscriptionIcons";
+
+export default function Subscriptions() {
   const [open, setOpen] = useState(false);
+  const [subscriptions, setSubscriptions] = useState([]);
+  const [totalCost, setTotalCost] = useState(0);
 
-  return (
-    <div className="min-h-screen w-screen flex bg-gradient-to-br from-white to-purple-100">
+  // Fetch logged-in user's subscriptions
+  const loadSubscriptions = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await api.get("/subscriptions", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-      {/* FIXED SIDEBAR */}
-      <div className="fixed left-0 top-0 h-screen w-64 bg-white shadow">
-        <Sidebar />
-      </div>
+      setSubscriptions(res.data);
 
-      {/* MAIN CONTENT */}
-      <div className="ml-64 flex-1 flex flex-col">
+      // Calculate monthly total
+      const total = res.data.reduce((acc, s) => acc + Number(s.cost), 0);
+      setTotalCost(total);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-        {/* FIXED NAVBAR */}
-        <div className="w-full fixed z-10 bg-white">
-          <Navbar />
-        </div>
+  useEffect(() => {
+    loadSubscriptions();
+  }, []);
 
-        {/* PAGE CONTENT */}
-        <div className="pt-24 px-12">
+ 
 
-          {/* TITLE + BUTTON */}
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <h2 className="text-[18px] font-semibold">Subscription Tracker</h2>
-              <p className="text-gray-500 text-sm">
-                Manage recurring subscriptions
-              </p>
-            </div>
+  // Delete subscription
+ const deleteSubscription = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
 
-            <button
-              onClick={() => setOpen(true)}
-              className="bg-black text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm"
-            >
-              <span className="text-lg">+</span> Add Subscription
-            </button>
-          </div>
+    await api.delete(`/subscriptions/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-          {/* MONTHLY OVERVIEW BOX */}
-          <div className="bg-white border rounded-xl p-6 mb-6 shadow-sm">
-            <h3 className="font-medium text-[16px] mb-1">Monthly Overview</h3>
-            <p className="text-gray-500 text-sm">Total recurring costs</p>
-
-            <h1 className="text-[32px] font-semibold mt-4">₹0</h1>
-            <p className="text-gray-500 text-sm mt-1">0 active subscriptions</p>
-          </div>
-
-          {/* EMPTY STATE */}
-          <div className="bg-white border rounded-xl h-[300px] flex flex-col items-center justify-center text-center shadow-sm">
-            <div className="text-gray-400 text-5xl mb-4">📺</div>
-            <p className="text-gray-600 font-medium">No subscriptions tracked</p>
-            <p className="text-gray-500 text-sm">
-              Add your subscriptions to track renewals
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* MODAL */}
-      {open && <AddSubscriptionModal onClose={() => setOpen(false)} />}
-    </div>
-  );
+    loadSubscriptions();
+  } catch (err) {
+    console.log("Delete Error:", err.response?.data || err);
+  }
 };
 
-export default Subscriptions;
+
+  return (
+    <div className="h-screen w-screen bg-gradient-to-br from-white to-purple-100 flex">
+      <Sidebar />
+
+      <div className="flex-1 p-6">
+        <Navbar />
+
+        {/* HEADER + BUTTON */}
+        <div className="flex justify-between items-center mt-6">
+          <div>
+            <h1 className="text-xl font-semibold">Subscription Tracker</h1>
+            <p className="text-gray-500">Manage recurring subscriptions</p>
+          </div>
+
+          <button
+            onClick={() => setOpen(true)}
+            className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg"
+          >
+            <Plus size={18} /> Add Subscription
+          </button>
+        </div>
+
+        {/* MONTHLY OVERVIEW CARD */}
+        <div className="bg-white p-6 mt-6 rounded-xl shadow-sm border">
+          <h2 className="text-lg font-semibold">Monthly Overview</h2>
+          <p className="text-gray-500">Total recurring costs</p>
+
+          <p className="text-4xl font-bold mt-3">₹{totalCost.toFixed(2)}</p>
+          <p className="text-gray-500 mt-1">
+            {subscriptions.length} active subscriptions
+          </p>
+        </div>
+
+        {/* SUBSCRIPTION LIST */}
+        <div className="mt-6 space-y-4">
+          {subscriptions.map((s) => {
+            const Icon = getSubscriptionIcon(s.name);
+
+            return (
+              <div
+                key={s._id}
+                className="bg-white p-5 rounded-xl border shadow-sm flex justify-between items-center"
+              >
+                {/* LEFT SIDE */}
+                <div className="flex items-center gap-4">
+                  <div className="bg-purple-100 p-3 rounded-full">
+                    <Icon className="text-purple-600" size={22} />
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold">{s.name}</h3>
+                    <p className="text-gray-500">
+                      {s.frequency} • Next:{" "}
+                      {new Date(s.nextRenewal).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+
+                {/* RIGHT SIDE */}
+                <div className="flex items-center gap-6">
+                  {/* COST */}
+                  <div className="text-lg font-semibold">₹{s.cost}</div>
+
+                  
+                  {/* DELETE BUTTON */}
+                  <Trash2
+                    className="text-red-500 cursor-pointer"
+                    onClick={() => deleteSubscription(s._id)}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* MODAL */}
+        {open && (
+          <AddSubscriptionModal
+            close={() => setOpen(false)}
+            reload={loadSubscriptions}
+          />
+        )}
+      </div>
+    </div>
+  );
+}

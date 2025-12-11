@@ -11,6 +11,9 @@ const budgetRoutes = require("./routes/budgetRoutes");
 const goalRoutes = require("./routes/goalRoutes");
 const investmentRoutes = require("./routes/investmentRoutes");
 const emiRoutes = require("./routes/emiRoutes");
+const subscriptionRoutes = require("./routes/subscriptionRoutes");
+
+
 
 const app = express();
 app.use(express.json());
@@ -23,6 +26,8 @@ app.use("/api/budgets", budgetRoutes);
 app.use("/api/goals", require("./routes/goalRoutes"));
 app.use("/api/investments", investmentRoutes);
 app.use("/api/emi", require("./routes/emiRoutes"));
+app.use("/api/subscriptions", subscriptionRoutes);
+
 
 
 

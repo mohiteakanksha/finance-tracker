@@ -9,8 +9,6 @@ import Budgets from "./pages/Budgets";
 import Savings from "./pages/Savings";
 import Investments from "./pages/Investments";
 import EMILoan from "./pages/EMILoan";
-
-import SharedExpenses from "./pages/SharedExpenses";
 import Subscription from "./pages/Subscription";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings.jsx";
@@ -40,7 +38,6 @@ export default function App() {
         <Route path="/savings" element={<ProtectedRoute element={<Savings />} />} />
         <Route path="/investments" element={<ProtectedRoute element={<Investments />} />} />
         <Route path="/emi" element={<ProtectedRoute element={<EMILoan />} />} />
-        <Route path="/shared-expenses" element={<ProtectedRoute element={<SharedExpenses />} />} />
         <Route path="/subscription" element={<ProtectedRoute element={<Subscription />} />} />
         <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} />} />
         <Route path="/settings" element={<ProtectedRoute element={<Settings />} />} />

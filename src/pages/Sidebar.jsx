@@ -25,8 +25,6 @@ const Sidebar = () => {
     { name: "Savings Goals", icon: <PiggyBank size={20} />, path: "/savings" },
     { name: "Investments", icon: <TrendingUp size={20} />, path: "/investments" },
     { name: "EMI & Loans", icon: <CreditCard size={20} />, path: "/emi" },
-
-    { name: "Shared Expenses", icon: <PieChart size={20} />, path: "/shared-expenses" },
     { name: "Subscription", icon: <Wallet size={20} />, path: "/subscription" },
     { name: "Analytics", icon: <BarChart3 size={20} />, path: "/analytics" },
     { name: "Settings", icon: <Settings size={20} />, path: "/settings" },
