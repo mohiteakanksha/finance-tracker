@@ -12,7 +12,7 @@ const goalRoutes = require("./routes/goalRoutes");
 const investmentRoutes = require("./routes/investmentRoutes");
 const emiRoutes = require("./routes/emiRoutes");
 const subscriptionRoutes = require("./routes/subscriptionRoutes");
-
+const analyticsRoutes = require("./routes/analyticsRoutes");
 
 
 const app = express();
@@ -27,7 +27,7 @@ app.use("/api/goals", require("./routes/goalRoutes"));
 app.use("/api/investments", investmentRoutes);
 app.use("/api/emi", require("./routes/emiRoutes"));
 app.use("/api/subscriptions", subscriptionRoutes);
-
+app.use("/api/analytics", analyticsRoutes);
 
 
 
