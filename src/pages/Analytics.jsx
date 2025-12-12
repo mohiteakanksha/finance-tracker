@@ -147,13 +147,13 @@ export default function Analytics() {
   };
 
   return (
-    <div className="min-h-screen w-screen flex bg-white">
+    <div className="h-screen w-screen bg-gradient-to-br from-white to-purple-100 flex">
       <Sidebar />
 
-      <div className="flex-1 ml-64">
+      <div className="flex-1 ml-10">
         <Navbar />
 
-         <div className=" mt-16 h-[calc(100vh-4rem)] overflow-y-auto">
+         <div className=" mt-16 overflow-y-auto">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Analytics & Reports</h2>
             <button
@@ -181,7 +181,7 @@ export default function Analytics() {
 
           {/* ------------------ OVERVIEW ------------------ */}
           {tab === "overview" && (
-            <div className="mt-10 space-y-10">
+            <div className="mt-0 space-y-10">
 
               {/* ----------- Annual Income vs Expense ----------- */}
               <div className="bg-white border rounded-xl p-6 shadow-sm">
