@@ -153,12 +153,12 @@ export default function Analytics() {
       <div className="flex-1 ml-64">
         <Navbar />
 
-        <div className="px-10 pt-24 pb-10">
+         <div className=" mt-16 h-[calc(100vh-4rem)] overflow-y-auto">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Analytics & Reports</h2>
             <button
               onClick={exportCSV}
-              className="bg-black text-white px-4 py-2 rounded-lg"
+              className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg"
             >
               Export CSV
             </button>

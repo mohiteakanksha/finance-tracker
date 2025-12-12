@@ -55,7 +55,7 @@ const EMILoans = () => {
       <div className="ml-64 flex-1 flex flex-col min-h-screen">
         <Navbar />
 
-        <div className="p-24">
+        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto">
           <div className="flex justify-between items-center mb-6">
             <div>
               <h2 className="text-xl font-semibold">EMI & Loan Tracker</h2>
@@ -66,7 +66,7 @@ const EMILoans = () => {
 
             <button
               onClick={() => setOpen(true)}
-              className="bg-black text-white px-4 py-2 rounded-lg flex items-center gap-2"
+              className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
             >
               <Plus size={18} /> Add EMI/Loan
             </button>
@@ -145,7 +145,7 @@ const EMILoans = () => {
 
                       <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
                         <div
-                          className="h-3 bg-black rounded-full transition-all duration-700"
+                          className="h-3 bg-purple-700 rounded-full transition-all duration-700"
                           style={{ width: `${progress}%` }}
                         ></div>
                       </div>
@@ -157,8 +157,8 @@ const EMILoans = () => {
                       className={`w-full mt-6 py-3 rounded-lg flex items-center justify-center gap-2
                         ${
                           item.paidEmis >= item.tenureMonths
-                            ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                            : "bg-black text-white hover:bg-gray-800"
+                            ? "bg-black text-white cursor-not-allowed"
+                            : "bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:bg-gray-800"
                         }`}
                     >
                       <Calendar size={18} />

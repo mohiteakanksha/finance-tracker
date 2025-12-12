@@ -118,7 +118,7 @@ const AddInvestmentModal = ({ onClose, reloadInvestments }) => {
 
           <button
             onClick={handleAddInvestment}
-            className="px-4 py-2 bg-black text-white rounded-lg"
+            className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg"
           >
             Add Investment
           </button>

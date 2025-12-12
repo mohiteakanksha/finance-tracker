@@ -64,16 +64,18 @@ const Savings = () => {
       <div className="flex-1">
         <Navbar />
 
-        <div className="p-24">
+        
+        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto">
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-semibold">Savings Goals</h1>
               <p className="text-gray-500">Track and manage your savings goals</p>
+               <h3 className="font-semibold text-lg">Goals</h3>
             </div>
 
             <button
               onClick={() => setOpenAddGoal(true)}
-              className="bg-purple-600 text-white px-5 py-2 rounded-xl shadow hover:bg-purple-700"
+              className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-5 py-2 rounded-xl shadow hover:bg-purple-700"
             >
               + Add New Goal
             </button>
@@ -118,7 +120,7 @@ const Savings = () => {
                         setSelectedGoal(goal);
                         setOpenAddMoney(true);
                       }}
-                      className="mt-4 w-full bg-black text-white py-2 rounded-xl"
+                      className="mt-4 w-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-2 rounded-xl"
                     >
                       Add Money
                     </button>
@@ -167,7 +169,7 @@ const Savings = () => {
 
               <button
                 onClick={saveAddedMoney}
-                className="px-6 py-2 bg-black text-white rounded-xl"
+                className="px-6 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-xl"
               >
                 Add Savings
               </button>

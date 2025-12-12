@@ -27,7 +27,7 @@ const Sidebar = () => {
     { name: "EMI & Loans", icon: <CreditCard size={20} />, path: "/emi" },
     { name: "Subscription", icon: <Wallet size={20} />, path: "/subscription" },
     { name: "Analytics", icon: <BarChart3 size={20} />, path: "/analytics" },
-    { name: "Settings", icon: <Settings size={20} />, path: "/settings" },
+
   ];
 
   return (

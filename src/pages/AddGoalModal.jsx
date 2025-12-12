@@ -71,7 +71,7 @@ const AddGoalModal = ({ onClose }) => {
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-black text-white rounded"
+            className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded"
           >
             Create Goal
           </button>

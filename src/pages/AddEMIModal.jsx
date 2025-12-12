@@ -132,7 +132,7 @@ const AddEMIModal = ({ onClose, reloadEMIs }) => {
 
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 rounded-lg bg-black text-white"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white"
           >
             Add EMI
           </button>

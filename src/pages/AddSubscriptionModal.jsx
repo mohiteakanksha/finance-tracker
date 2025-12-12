@@ -115,7 +115,7 @@ const AddSubscriptionModal = ({ onClose, reload }) => {
 
           <button
             onClick={saveSubscription}
-            className="bg-black text-white px-4 py-2 rounded-lg"
+            className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg"
           >
             Add Subscription
           </button>

@@ -2,6 +2,9 @@
 import { Mail, Lock, Wallet } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { TrendingUp, PiggyBank, Target } from "lucide-react";
+
+
 import api from "../axiosConfig";
 
 export default function Login() {
@@ -41,7 +44,7 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-br from-white to-purple-100">
+    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100">
       <div className="bg-white w-full max-w-md rounded-3xl shadow-xl p-10 border border-gray-100">
 
         <div className="flex justify-center">
@@ -107,20 +110,34 @@ export default function Login() {
           </p>
         </div>
 
-        <div className="flex justify-between mt-10 text-center">
-          <div className="flex flex-col items-center">
-            <img src="https://cdn-icons-png.flaticon.com/512/1040/1040238.png" className="w-8 mb-1 opacity-80" />
-            <p className="text-xs text-gray-600">Track Income</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <img src="https://cdn-icons-png.flaticon.com/512/992/992652.png" className="w-8 mb-1 opacity-80" />
-            <p className="text-xs text-gray-600">Save More</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <img src="https://cdn-icons-png.flaticon.com/512/3600/3600931.png" className="w-8 mb-1 opacity-80" />
-            <p className="text-xs text-gray-600">Reach Goals</p>
-          </div>
-        </div>
+       <div className="flex justify-between mt-10 text-center">
+
+  {/* Track Income */}
+  <div className="flex flex-col items-center">
+    <div className="p-3 rounded-2xl bg-green-50">
+      <TrendingUp size={22} className="text-green-600 opacity-80" />
+    </div>
+    <p className="text-xs mt-2 text-gray-600">Track Income</p>
+  </div>
+
+  {/* Save More */}
+  <div className="flex flex-col items-center">
+    <div className="p-3 rounded-2xl bg-blue-50">
+      <PiggyBank size={22} className="text-blue-600 opacity-80" />
+    </div>
+    <p className="text-xs mt-2 text-gray-600">Save More</p>
+  </div>
+
+  {/* Reach Goals */}
+  <div className="flex flex-col items-center">
+    <div className="p-3 rounded-2xl bg-purple-50">
+      <Target size={22} className="text-purple-600 opacity-80" />
+    </div>
+    <p className="text-xs mt-2 text-gray-600">Reach Goals</p>
+  </div>
+
+</div>
+
       </div>
     </div>
   );

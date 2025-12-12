@@ -1,21 +1,18 @@
 import { useNavigate } from "react-router-dom";
+import { Wallet } from "lucide-react";
 
 export default function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-br from-white to-purple-100">
+    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100">
 
       <div className="bg-white shadow-xl rounded-3xl p-10 max-w-3xl w-full border border-gray-200">
 
         {/* Icon */}
-        <div className="flex justify-center mb-6">
-          <div className="bg-gray-100 p-4 rounded-full shadow">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/3597/3597075.png"
-              alt="wallet"
-              className="w-12 h-12 opacity-80"
-            />
+        <div className="flex justify-center ">
+          <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-4 rounded-full shadow">
+            <Wallet size={48} className="text-white opacity-80" />
           </div>
         </div>
 
@@ -76,7 +73,6 @@ export default function Home() {
           >
             Get Started →
           </button>
-
         </div>
 
         {/* Footer Info */}

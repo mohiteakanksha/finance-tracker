@@ -60,7 +60,7 @@ export default function Subscriptions() {
         <Navbar />
 
         {/* HEADER + BUTTON */}
-        <div className="flex justify-between items-center mt-6">
+        <div className="flex justify-between items-center mt-6 p-8">
           <div>
             <h1 className="text-xl font-semibold">Subscription Tracker</h1>
             <p className="text-gray-500">Manage recurring subscriptions</p>
@@ -68,14 +68,14 @@ export default function Subscriptions() {
 
           <button
             onClick={() => setOpen(true)}
-            className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg"
+            className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg"
           >
             <Plus size={18} /> Add Subscription
           </button>
         </div>
 
         {/* MONTHLY OVERVIEW CARD */}
-        <div className="bg-white p-6 mt-6 rounded-xl shadow-sm border">
+        <div className="bg-white p-4  rounded-xl shadow-sm border">
           <h2 className="text-lg font-semibold">Monthly Overview</h2>
           <p className="text-gray-500">Total recurring costs</p>
 

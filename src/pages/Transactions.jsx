@@ -44,8 +44,8 @@ const Transactions = () => {
 
       <div className="flex-1 flex flex-col">
         <Navbar />
-
-        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto">
+<
+        div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto">
           <h2 className="text-xl font-semibold">Transactions</h2>
           <p className="text-gray-500 mb-6">Track all your income and expenses</p>
 
@@ -55,7 +55,7 @@ const Transactions = () => {
               <h3 className="font-semibold text-lg">Transactions</h3>
               <button
                 onClick={() => setOpen(true)}
-                className="bg-black text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
               >
                 + Add Transaction
               </button>

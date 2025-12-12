@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -11,7 +12,9 @@ import Investments from "./pages/Investments";
 import EMILoan from "./pages/EMILoan";
 import Subscription from "./pages/Subscription";
 import Analytics from "./pages/Analytics";
-import Settings from "./pages/Settings.jsx";
+
+// Splash Screen
+import SplashScreen from "./pages/SplashScreen";
 
 // =========================
 // 🔒 PROTECTED ROUTE
@@ -22,6 +25,19 @@ const ProtectedRoute = ({ element }) => {
 };
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
+  // Show splash for 1.5 sec
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // While splash is showing, don't load routes
+  if (loading) {
+    return <SplashScreen />;
+  }
+
   return (
     <Router>
       <Routes>
@@ -40,7 +56,6 @@ export default function App() {
         <Route path="/emi" element={<ProtectedRoute element={<EMILoan />} />} />
         <Route path="/subscription" element={<ProtectedRoute element={<Subscription />} />} />
         <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} />} />
-        <Route path="/settings" element={<ProtectedRoute element={<Settings />} />} />
 
       </Routes>
     </Router>
