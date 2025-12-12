@@ -54,4 +54,26 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+router.get("/count", auth, async (req, res) => {
+  try {
+    const userId = req.userId; // ✅ correct
+    const now = new Date();
+    const month = now.getMonth();
+    const year = now.getFullYear();
+
+    const count = await Transaction.countDocuments({
+      userId,
+      date: {
+        $gte: new Date(year, month, 1),
+        $lte: new Date(year, month + 1, 0),
+      },
+    });
+
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ message: "Error counting transactions" });
+  }
+});
+
+
 module.exports = router;

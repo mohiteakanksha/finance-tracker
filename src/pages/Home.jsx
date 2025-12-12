@@ -72,14 +72,11 @@ export default function Home() {
         <div className="space-y-4">
           <button
             onClick={() => navigate("/login")}
-            className="w-full bg-black text-white py-3 rounded-xl text-sm font-medium hover:bg-gray-900 transition"
+            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl text-sm font-medium hover:bg-gray-900 transition"
           >
             Get Started →
           </button>
 
-          <button className="w-full border border-gray-300 py-3 rounded-xl text-gray-600 text-sm hover:bg-gray-100 transition">
-            Load Demo Data
-          </button>
         </div>
 
         {/* Footer Info */}
