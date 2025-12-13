@@ -30,5 +30,17 @@ router.get("/", auth, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const deleted = await Budget.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.userId,
+    });
+
+    res.json({ success: true, deleted });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;
