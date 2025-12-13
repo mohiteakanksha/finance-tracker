@@ -5,7 +5,7 @@ export default function SplashScreen() {
   return (
     <div
       className="h-screen w-screen
-        flex flex-col items-center justify-center w-full
+        flex flex-col items-center justify-center 
         bg-gradient-to-r from-purple-700 to-indigo-300
         animate-screenFade
       "
