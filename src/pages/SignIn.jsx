@@ -38,11 +38,11 @@ export default function Signup() {
   };
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100">
+    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-br from-white to-purple-100">
       <div className="bg-white w-full max-w-md rounded-3xl shadow-xl p-10 border border-gray-100">
 
         <div className="flex justify-center">
-          <div className="bg-gradient-to-br from-purple-500 to-pink-500 p-4 rounded-2xl shadow-md">
+          <div className="bg-gradient-to-r from-purple-500 to-indigo-600 p-4 rounded-2xl shadow-md">
             <Wallet className="text-white w-10 h-10" />
           </div>
         </div>
@@ -103,7 +103,7 @@ export default function Signup() {
           {/* Signup Button */}
           <button
             onClick={handleSignup}
-            className="w-full mt-6 py-3 rounded-xl text-white font-medium bg-gradient-to-r from-purple-500 to-pink-500 shadow-md hover:opacity-90 transition"
+            className="w-full mt-6 py-3 rounded-xl text-white font-medium bg-gradient-to-r from-purple-500 to-indigo-600 shadow-md hover:opacity-90 transition"
           >
             Sign Up
           </button>

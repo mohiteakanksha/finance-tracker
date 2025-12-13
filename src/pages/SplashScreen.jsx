@@ -6,7 +6,7 @@ export default function SplashScreen() {
     <div
       className="h-screen w-screen
         flex flex-col items-center justify-center w-full
-        bg-gradient-to-br from-purple-600 to-pink-500
+        bg-gradient-to-r from-purple-700 to-indigo-300
         animate-screenFade
       "
     >

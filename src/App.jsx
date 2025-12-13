@@ -13,28 +13,33 @@ import EMILoan from "./pages/EMILoan";
 import Subscription from "./pages/Subscription";
 import Analytics from "./pages/Analytics";
 
-// Splash Screen
 import SplashScreen from "./pages/SplashScreen";
 
-// =========================
-// 🔒 PROTECTED ROUTE
-// =========================
+// 🔒 Protected Route
 const ProtectedRoute = ({ element }) => {
   const token = localStorage.getItem("token");
   return token ? element : <Navigate to="/login" />;
 };
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
+  const [showSplash, setShowSplash] = useState(false);
 
-  // Show splash for 1.5 sec
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1500);
-    return () => clearTimeout(timer);
+    const hasShownSplash = sessionStorage.getItem("splashShown");
+
+    if (!hasShownSplash) {
+      setShowSplash(true);
+
+      const timer = setTimeout(() => {
+        setShowSplash(false);
+        sessionStorage.setItem("splashShown", "true");
+      }, 7000); // ✅ 10 seconds
+
+      return () => clearTimeout(timer);
+    }
   }, []);
 
-  // While splash is showing, don't load routes
-  if (loading) {
+  if (showSplash) {
     return <SplashScreen />;
   }
 
@@ -42,12 +47,12 @@ export default function App() {
     <Router>
       <Routes>
 
-        {/* PUBLIC ROUTES */}
+        {/* PUBLIC */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<SignIn />} />
 
-        {/* PROTECTED ROUTES */}
+        {/* PROTECTED */}
         <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
         <Route path="/transactions" element={<ProtectedRoute element={<Transactions />} />} />
         <Route path="/budgets" element={<ProtectedRoute element={<Budgets />} />} />

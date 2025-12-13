@@ -75,7 +75,7 @@ export default function Subscriptions() {
         </div>
 
         {/* MONTHLY OVERVIEW CARD */}
-        <div className="bg-white p-4  rounded-xl shadow-sm border pt-16 pl-64 ml-6 mt-6  ">
+        <div className="bg-white p-4  rounded-xl shadow-sm border pt-16 pl-64 ml-6 mt-6  pr-6 ">
           <h2 className="text-lg font-semibold">Monthly Overview</h2>
           <p className="text-gray-500">Total recurring costs</p>
 
