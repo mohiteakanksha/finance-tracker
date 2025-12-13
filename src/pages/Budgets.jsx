@@ -49,29 +49,30 @@ const Budgets = () => {
       <div className="flex flex-col flex-1">
         <Navbar />
 
-        <div className="p-8 mt-10 h-[calc(100vh-4rem)] overflow-y-auto pl-64 pr-6 ml-6 ">
-          {/* ================= PAGE HEADER ================= */}
-          <h2 className="text-xl font-semibold">Budget Management</h2>
-          <p className="text-gray-500 mb-6">
-            Set and track category-wise budgets
-          </p>
+        <div className="p-8 mt-10 h-[calc(100vh-4rem)] overflow-y-auto pl-64 pr-6 ml-6">
+          
+          {/* ================= PAGE HEADER (BUTTON MOVED HERE) ================= */}
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-xl font-semibold">Budget Management</h2>
+              <p className="text-gray-500">
+                Set and track category-wise budgets
+              </p>
+            </div>
+
+            <button
+              onClick={() => setOpen(true)}
+              className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-5 py-2 rounded-lg"
+            >
+              + Add Budget
+            </button>
+          </div>
 
           {/* ================= MAIN CARD ================= */}
           <div className="bg-white shadow-sm border rounded-xl p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-semibold text-lg">Budgets</h3>
 
-              <button
-                onClick={() => setOpen(true)}
-                className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg"
-              >
-                + Add Budget
-              </button>
-            </div>
-
-            {/* ================= EMPTY STATE / GRID ================= */}
             {budgets.length === 0 ? (
-              /* 🔹 EMPTY STATE (exact like design) */
+              /* ================= EMPTY STATE ================= */
               <div className="flex flex-col items-center justify-center py-24 text-center">
                 <p className="text-lg font-medium text-gray-600">
                   No budgets set
@@ -81,8 +82,8 @@ const Budgets = () => {
                 </p>
               </div>
             ) : (
-              /* 🔹 BUDGETS GRID */
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+              /* ================= BUDGET GRID ================= */
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {budgets.map((b) => {
                   const spent = b.spent || 0;
                   const percentUsed =

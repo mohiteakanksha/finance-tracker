@@ -130,7 +130,7 @@ export default function Subscriptions() {
         {/* MODAL */}
         {open && (
           <AddSubscriptionModal
-            close={() => setOpen(false)}
+            onClose={() => setOpen(false)}
             reload={loadSubscriptions}
           />
         )}

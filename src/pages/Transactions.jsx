@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
-import { Search, ChevronDown } from "lucide-react";
 import AddTransactionModal from "./AddTransactionModal";
 import { Navigate } from "react-router-dom";
 
@@ -28,7 +27,7 @@ const Transactions = () => {
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [token]);
 
   const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString("en-GB", {
@@ -44,22 +43,30 @@ const Transactions = () => {
 
       <div className="flex-1 flex flex-col">
         <Navbar />
-<
-        div className="p-8 mt-2 h-[calc(100vh-4rem)] overflow-y-auto pt-16 pl-64 ml-6 ">
-          <h2 className="text-xl font-semibold">Transactions</h2>
-          <p className="text-gray-500 mb-6">Track all your income and expenses</p>
 
-          <div className="bg-white shadow-sm border rounded-xl p-6">
+        {/* MAIN CONTENT */}
+        <div className="p-8 mt-2 h-[calc(100vh-4rem)] overflow-y-auto pt-16 pl-64 ml-6">
 
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-semibold text-lg">Transactions</h3>
-              <button
-                onClick={() => setOpen(true)}
-                className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-              >
-                + Add Transaction
-              </button>
+          {/* PAGE HEADER + BUTTON (OUTSIDE CARD) */}
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-xl font-semibold">Transactions</h2>
+              <p className="text-gray-500">
+                Track all your income and expenses
+              </p>
             </div>
+
+            <button
+              onClick={() => setOpen(true)}
+              className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+            >
+              + Add Transaction
+            </button>
+          </div>
+
+          {/* TRANSACTIONS CARD */}
+          <div className="bg-white shadow-sm border rounded-xl p-6">
+            <h3 className="font-semibold text-lg mb-4">Transactions</h3>
 
             {transactions.length === 0 ? (
               <div className="text-center text-gray-500 py-12">
@@ -77,22 +84,31 @@ const Transactions = () => {
                       <div
                         className="w-12 h-12 rounded-full flex items-center justify-center text-white"
                         style={{
-                          background: t.type === "income" ? "#16a34a" : "#ef4444",
+                          background:
+                            t.type === "income" ? "#16a34a" : "#ef4444",
                         }}
                       >
                         {t.type === "income" ? "↓" : "↑"}
                       </div>
 
                       <div>
-                        <h4 className="font-semibold text-lg">{t.category}</h4>
-                        <p className="text-gray-500 text-sm">{t.paymentMethod}</p>
-                        <p className="text-gray-400 text-xs">{formatDate(t.date)}</p>
+                        <h4 className="font-semibold text-lg">
+                          {t.category}
+                        </h4>
+                        <p className="text-gray-500 text-sm">
+                          {t.paymentMethod}
+                        </p>
+                        <p className="text-gray-400 text-xs">
+                          {formatDate(t.date)}
+                        </p>
                       </div>
                     </div>
 
                     <p
                       className={`text-lg font-semibold ${
-                        t.type === "expense" ? "text-red-500" : "text-green-600"
+                        t.type === "expense"
+                          ? "text-red-500"
+                          : "text-green-600"
                       }`}
                     >
                       {t.type === "expense" ? "-" : "+"}₹{t.amount}

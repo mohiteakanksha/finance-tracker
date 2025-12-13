@@ -23,27 +23,25 @@ const AddSubscriptionModal = ({ onClose, reload }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      reload();
-      onClose();
+      reload();   // refresh list
+      onClose();  // close modal
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-      <div className="bg-white w-[520px] rounded-xl p-6 shadow-lg relative">
+    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+      <div className="bg-white w-[520px] p-6 rounded-xl shadow-xl">
 
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 text-gray-500 hover:text-black"
-        >
-          <X size={20} />
-        </button>
+        {/* HEADER (same as Investment modal) */}
+        <div className="flex justify-between items-center mb-5">
+          <h2 className="text-xl font-semibold">Add Subscription</h2>
+          <X className="cursor-pointer" onClick={onClose} />
+        </div>
 
-        <h2 className="text-xl font-semibold mb-1">Add Subscription</h2>
-
-        <div className="flex flex-col gap-4">
+        {/* FORM */}
+        <div className="space-y-4">
 
           <div>
             <label className="text-sm font-medium">Subscription Name *</label>
@@ -52,7 +50,7 @@ const AddSubscriptionModal = ({ onClose, reload }) => {
               name="name"
               value={form.name}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border rounded-lg bg-gray-100"
+              className="w-full border rounded-lg px-3 py-2 mt-1"
             />
           </div>
 
@@ -63,7 +61,7 @@ const AddSubscriptionModal = ({ onClose, reload }) => {
               name="cost"
               value={form.cost}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border rounded-lg bg-gray-100"
+              className="w-full border rounded-lg px-3 py-2 mt-1"
             />
           </div>
 
@@ -73,7 +71,7 @@ const AddSubscriptionModal = ({ onClose, reload }) => {
               name="frequency"
               value={form.frequency}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border rounded-lg bg-gray-100"
+              className="w-full border rounded-lg px-3 py-2 mt-1"
             >
               <option>Monthly</option>
               <option>Quarterly</option>
@@ -88,7 +86,7 @@ const AddSubscriptionModal = ({ onClose, reload }) => {
               name="nextRenewal"
               value={form.nextRenewal}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border rounded-lg bg-gray-100"
+              className="w-full border rounded-lg px-3 py-2 mt-1"
             />
           </div>
 
@@ -98,7 +96,7 @@ const AddSubscriptionModal = ({ onClose, reload }) => {
               name="category"
               value={form.category}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border rounded-lg bg-gray-100"
+              className="w-full border rounded-lg px-3 py-2 mt-1"
             >
               <option>Entertainment</option>
               <option>Education</option>
@@ -106,8 +104,10 @@ const AddSubscriptionModal = ({ onClose, reload }) => {
               <option>Utilities</option>
             </select>
           </div>
+
         </div>
 
+        {/* ACTION BUTTONS */}
         <div className="flex justify-end gap-3 mt-6">
           <button onClick={onClose} className="px-4 py-2 border rounded-lg">
             Cancel
@@ -115,7 +115,7 @@ const AddSubscriptionModal = ({ onClose, reload }) => {
 
           <button
             onClick={saveSubscription}
-            className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg"
+            className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg"
           >
             Add Subscription
           </button>
