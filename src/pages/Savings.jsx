@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import AddGoalModal from "./AddGoalModal";
 import axios from "axios";
+import { Trash2 } from "lucide-react";
 
 const Savings = () => {
   const [openAddGoal, setOpenAddGoal] = useState(false);
@@ -12,13 +13,12 @@ const Savings = () => {
 
   const [goals, setGoals] = useState([]);
 
-  // Fetch goals
+  // ================= FETCH GOALS =================
   const fetchGoals = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/goals", {
-  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-});
-
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
 
       setGoals(res.data);
       console.log("GOALS:", res.data);
@@ -31,7 +31,7 @@ const Savings = () => {
     fetchGoals();
   }, []);
 
-  // Handle "Add Money"
+  // ================= ADD MONEY =================
   const saveAddedMoney = async () => {
     if (!amountToAdd || amountToAdd <= 0) {
       alert("Enter a valid amount");
@@ -39,14 +39,13 @@ const Savings = () => {
     }
 
     try {
-    await axios.post(
-  `http://localhost:5000/api/goals/add-money/${selectedGoal._id}`,
-  { amount: Number(amountToAdd) },
-  {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-  }
-);
-
+      await axios.post(
+        `http://localhost:5000/api/goals/add-money/${selectedGoal._id}`,
+        { amount: Number(amountToAdd) },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
 
       setOpenAddMoney(false);
       setAmountToAdd("");
@@ -57,6 +56,20 @@ const Savings = () => {
     }
   };
 
+  // ================= DELETE GOAL =================
+  const deleteGoal = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/goals/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+
+      setGoals((prev) => prev.filter((g) => g._id !== id));
+    } catch (err) {
+      console.log("Delete Goal Error:", err);
+      alert("Failed to delete goal");
+    }
+  };
+
   return (
     <div className="h-screen flex w-screen bg-gradient-to-br from-white to-purple-100">
       <Sidebar />
@@ -64,13 +77,13 @@ const Savings = () => {
       <div className="flex-1">
         <Navbar />
 
-        
         <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto">
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-semibold">Savings Goals</h1>
-              <p className="text-gray-500">Track and manage your savings goals</p>
-               <h3 className="font-semibold text-lg">Goals</h3>
+              <p className="text-gray-500">
+                Track and manage your savings goals
+              </p>
             </div>
 
             <button
@@ -81,58 +94,73 @@ const Savings = () => {
             </button>
           </div>
 
-          {/* Goals Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-8">
-            {goals.length === 0 ? (
-              <p className="text-gray-500">No goals yet. Add your first goal!</p>
-            ) : (
-              goals.map((goal) => {
-                const percent = Math.floor(
-                  (goal.currentAmount / goal.targetAmount) * 100
-                );
+          {/* ================= GOALS GRID ================= */}
+         {/* ================= GOALS CONTAINER ================= */}
+<div className="bg-white shadow-sm border rounded-xl p-6 mt-8">
+  <h3 className="font-semibold text-lg mb-4">Goals</h3>
 
-                return (
-                  <div
-                    key={goal._id}
-                    className="bg-white p-6 rounded-2xl shadow border hover:shadow-lg transition"
-                  >
-                    <h3 className="text-lg font-semibold">{goal.name}</h3>
+  {goals.length === 0 ? (
+    <div className="text-gray-500 text-center py-12">
+      No goals yet. Add your first goal!
+    </div>
+  ) : (
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {goals.map((goal) => {
+        const percent = Math.floor(
+          (goal.currentAmount / goal.targetAmount) * 100
+        );
 
-                    <p className="text-gray-600 text-sm mb-3">
-                      ₹{goal.currentAmount.toLocaleString()} / ₹
-                      {goal.targetAmount.toLocaleString()}
-                    </p>
+        return (
+          <div
+            key={goal._id}
+            className="bg-white p-6 rounded-2xl shadow border hover:shadow-lg transition relative"
+          >
+            {/* DELETE BUTTON */}
+            <button
+              onClick={() => deleteGoal(goal._id)}
+              className="absolute top-4 right-4 text-red-500 hover:text-red-700"
+            >
+              <Trash2 size={18} />
+            </button>
 
-                    {/* Progress Bar */}
-                    <div className="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
-                      <div
-                        className="bg-purple-600 h-3"
-                        style={{ width: `${percent}%` }}
-                      ></div>
-                    </div>
+            <h3 className="text-lg font-semibold">{goal.name}</h3>
 
-                    <p className="text-right text-sm font-medium mt-1 text-gray-700">
-                      {percent}% Saved
-                    </p>
+            <p className="text-gray-600 text-sm mb-3">
+              ₹{goal.currentAmount.toLocaleString()} / ₹
+              {goal.targetAmount.toLocaleString()}
+            </p>
 
-                    <button
-                      onClick={() => {
-                        setSelectedGoal(goal);
-                        setOpenAddMoney(true);
-                      }}
-                      className="mt-4 w-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-2 rounded-xl"
-                    >
-                      Add Money
-                    </button>
-                  </div>
-                );
-              })
-            )}
+            {/* PROGRESS BAR */}
+            <div className="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
+              <div
+                className="bg-purple-600 h-3"
+                style={{ width: `${percent}%` }}
+              ></div>
+            </div>
+
+            <p className="text-right text-sm font-medium mt-1 text-gray-700">
+              {percent}% Saved
+            </p>
+
+            <button
+              onClick={() => {
+                setSelectedGoal(goal);
+                setOpenAddMoney(true);
+              }}
+              className="mt-4 w-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-2 rounded-xl"
+            >
+              Add Money
+            </button>
           </div>
-        </div>
-      </div>
+        );
+      })}
+    </div>
+  )}
+</div>
+</div>
+</div>
 
-      {/* Add Goal Modal */}
+      {/* ADD GOAL MODAL */}
       {openAddGoal && (
         <AddGoalModal
           onClose={() => {
@@ -142,7 +170,7 @@ const Savings = () => {
         />
       )}
 
-      {/* Add Money Popup */}
+      {/* ADD MONEY MODAL */}
       {openAddMoney && selectedGoal && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-2xl w-full max-w-md shadow-xl">
