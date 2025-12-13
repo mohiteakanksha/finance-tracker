@@ -165,7 +165,7 @@ export default function Analytics() {
           </div>
           <p className="text-gray-500 mb-6">Detailed financial insights</p>
 
-          <div className="flex items-center gap-4 bg-gray-100 p-1 rounded-full w-[650px]">
+          <div className="flex items-center gap-6 bg-purple-200 p-1 rounded-full ">
             {["overview", "trends", "categories", "comparison"].map((t) => (
               <button
                 key={t}
@@ -181,7 +181,7 @@ export default function Analytics() {
 
           {/* ------------------ OVERVIEW ------------------ */}
           {tab === "overview" && (
-            <div className="mt-0 space-y-10">
+            <div className="mt-10 space-y-10">
 
               {/* ----------- Annual Income vs Expense ----------- */}
               <div className="bg-white border rounded-xl p-6 shadow-sm">
@@ -396,7 +396,7 @@ export default function Analytics() {
 
           {/* ------------------ COMPARISON ------------------ */}
           {tab === "comparison" && comparison && (
-            <div className="mt-10 space-y-6 w-[600px]">
+            <div className="mt-10 space-y-6 ">
               {[
                 { label: "Income", key: "income", color: "text-green-600" },
                 { label: "Expenses", key: "expense", color: "text-red-600" },
