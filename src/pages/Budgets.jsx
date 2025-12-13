@@ -11,6 +11,7 @@ const Budgets = () => {
 
   const token = localStorage.getItem("token");
 
+  /* ================= FETCH budgets ================= */
   const fetchBudgets = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/budgets", {
@@ -26,7 +27,7 @@ const Budgets = () => {
     fetchBudgets();
   }, []);
 
-  // DELETE budget
+  /* ================= DELETE budget ================= */
   const deleteBudget = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/api/budgets/${id}`, {
@@ -64,12 +65,14 @@ const Budgets = () => {
               </button>
             </div>
 
-            {/* Budgets Grid */}
+            {/* ================= Budgets Grid ================= */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               {budgets.map((b) => {
-                const spent = 0;
+                const spent = b.spent || 0;
                 const percentUsed =
-                  b.amount > 0 ? (spent / b.amount) * 100 : 0;
+                  b.amount > 0
+                    ? Math.min((spent / b.amount) * 100, 100)
+                    : 0;
                 const remaining = b.amount - spent;
 
                 return (
@@ -78,10 +81,7 @@ const Budgets = () => {
                     className="bg-white shadow-sm border rounded-xl p-6 relative"
                   >
                     <button
-                      onClick={() => {
-                        console.log("TRASH CLICKED:", b._id);
-                        deleteBudget(b._id);
-                      }}
+                      onClick={() => deleteBudget(b._id)}
                       className="absolute top-4 right-4 text-red-500"
                     >
                       <Trash2 size={18} />
@@ -99,7 +99,7 @@ const Budgets = () => {
 
                     <div className="w-full bg-gray-200 h-2 rounded-lg mt-2">
                       <div
-                        className="h-2 bg-black rounded-lg"
+                        className="h-2 bg-purple-700 rounded-lg"
                         style={{ width: `${percentUsed}%` }}
                       ></div>
                     </div>
