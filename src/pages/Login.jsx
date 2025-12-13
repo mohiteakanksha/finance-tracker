@@ -28,9 +28,14 @@ export default function Login() {
 
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
+          localStorage.setItem("user", JSON.stringify(res.data.user));
 
         if (res.data.user) {
-          localStorage.setItem("userId", res.data.user._id);
+          localStorage.setItem("userId", res.data.user.id);
+           console.log(
+        "Saved user:",
+        JSON.parse(localStorage.getItem("user"))
+      );
         }
 
         alert("Login Successful!");

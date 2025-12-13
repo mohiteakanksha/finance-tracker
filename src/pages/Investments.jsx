@@ -50,7 +50,7 @@ const Investments = () => {
       <div className="flex-1 flex flex-col">
         <Navbar />
 
-        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto">
+        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto pt-16 pl-64">
 
           {/* Header */}
           <div className="flex justify-between items-center mb-10">

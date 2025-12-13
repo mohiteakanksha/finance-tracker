@@ -47,7 +47,7 @@ const Budgets = () => {
       <div className="flex flex-col flex-1">
         <Navbar />
 
-        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto">
+        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto pt-16 pl-64">
           <h2 className="text-xl font-semibold">Budget Management</h2>
           <p className="text-gray-500 mb-6">
             Set and track category-wise budgets
@@ -56,6 +56,7 @@ const Budgets = () => {
           <div className="bg-white shadow-sm border rounded-xl p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-semibold text-lg">Budgets</h3>
+              
 
               <button
                 onClick={() => setOpen(true)}

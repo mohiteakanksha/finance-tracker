@@ -31,7 +31,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-64 bg-white border-r flex flex-col p-6 h-screen sticky top-0">
+    <aside className="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] bg-white border-r">
 
       <nav className="flex flex-col gap-3 flex-1 mt-4">
         {menuItems.map((item) => (

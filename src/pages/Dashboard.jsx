@@ -222,7 +222,7 @@ export default function Dashboard() {
         <Sidebar />
 
         {/* MAIN CONTENT  */}
-        <main className="flex-1 mt-14 p-12 overflow-y-auto">
+        <main className="flex-1 mt-14 p-12 overflow-y-auto pt-16 pl-64">
 
           {/* HEADER CARD */}
           <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white p-6 rounded-2xl shadow">

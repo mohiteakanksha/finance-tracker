@@ -77,7 +77,7 @@ const Savings = () => {
       <div className="flex-1">
         <Navbar />
 
-        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto">
+        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto pt-16 pl-64">
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-semibold">Savings Goals</h1>
