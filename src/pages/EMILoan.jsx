@@ -55,7 +55,7 @@ const EMILoans = () => {
       <div className="ml-64 flex-1 flex flex-col min-h-screen">
         <Navbar />
 
-        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto  ">
+        <div className="p-6 mt-12 h-[calc(100vh-4rem)] overflow-y-auto  ">
           <div className="flex justify-between items-center mb-6">
             <div>
               <h2 className="text-xl font-semibold">EMI & Loan Tracker</h2>

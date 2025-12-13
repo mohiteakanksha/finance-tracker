@@ -60,7 +60,7 @@ export default function Subscriptions() {
         <Navbar />
 
         {/* HEADER + BUTTON */}
-        <div className="flex justify-between items-center mt-6 p-8 pt-16 pl-64">
+        <div className="flex justify-between items-center p-8 pt-16 pl-64">
           <div>
             <h1 className="text-xl font-semibold">Subscription Tracker</h1>
             <p className="text-gray-500">Manage recurring subscriptions</p>
@@ -75,7 +75,7 @@ export default function Subscriptions() {
         </div>
 
         {/* MONTHLY OVERVIEW CARD */}
-        <div className="bg-white p-4  rounded-xl shadow-sm border pt-16 pl-64">
+        <div className="bg-white p-4  rounded-xl shadow-sm border pt-16 pl-64 ml-6 mt-6  ">
           <h2 className="text-lg font-semibold">Monthly Overview</h2>
           <p className="text-gray-500">Total recurring costs</p>
 
@@ -86,7 +86,7 @@ export default function Subscriptions() {
         </div>
 
         {/* SUBSCRIPTION LIST */}
-        <div className="mt-6 space-y-4 pl-64">
+        <div className="mt-6 space-y-4 pl-64 ">
           {subscriptions.map((s) => {
             const Icon = getSubscriptionIcon(s.name);
 

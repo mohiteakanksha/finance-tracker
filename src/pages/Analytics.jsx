@@ -153,7 +153,7 @@ export default function Analytics() {
       <div className="flex-1 ml-10">
         <Navbar />
 
-         <div className=" mt-16 overflow-y-auto pt-16 pl-64">
+         <div className=" mt-16 overflow-y-auto pt-1 pl-60">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Analytics & Reports</h2>
             <button

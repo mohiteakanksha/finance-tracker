@@ -9,11 +9,19 @@ const Investments = () => {
   const [investments, setInvestments] = useState([]);
 
   // Calculate totals
-  const totalInvested = investments.reduce((sum, i) => sum + i.amountInvested, 0);
-  const totalCurrent = investments.reduce((sum, i) => sum + i.currentValue, 0);
+  const totalInvested = investments.reduce(
+    (sum, i) => sum + i.amountInvested,
+    0
+  );
+  const totalCurrent = investments.reduce(
+    (sum, i) => sum + i.currentValue,
+    0
+  );
   const totalReturns = totalCurrent - totalInvested;
   const totalReturnPercent =
-    totalInvested > 0 ? ((totalReturns / totalInvested) * 100).toFixed(2) : 0;
+    totalInvested > 0
+      ? ((totalReturns / totalInvested) * 100).toFixed(2)
+      : 0;
 
   const loadInvestments = async () => {
     const token = localStorage.getItem("token");
@@ -50,9 +58,8 @@ const Investments = () => {
       <div className="flex-1 flex flex-col">
         <Navbar />
 
-        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto pt-16 pl-64">
-
-          {/* Header */}
+        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto pl-64">
+          {/* ================= HEADER ================= */}
           <div className="flex justify-between items-center mb-10">
             <div>
               <h2 className="text-2xl font-semibold">Investment Portfolio</h2>
@@ -69,17 +76,20 @@ const Investments = () => {
             </button>
           </div>
 
-          {/* Summary Cards */}
+          {/* ================= SUMMARY CARDS ================= */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-
             <div className="border rounded-xl p-6 bg-white shadow-md">
               <p className="text-gray-500 text-sm">Total Invested</p>
-              <h3 className="text-3xl font-semibold mt-2">₹{totalInvested.toLocaleString()}</h3>
+              <h3 className="text-3xl font-semibold mt-2">
+                ₹{totalInvested.toLocaleString()}
+              </h3>
             </div>
 
             <div className="border rounded-xl p-6 bg-white shadow-md">
               <p className="text-gray-500 text-sm">Current Value</p>
-              <h3 className="text-3xl font-semibold mt-2">₹{totalCurrent.toLocaleString()}</h3>
+              <h3 className="text-3xl font-semibold mt-2">
+                ₹{totalCurrent.toLocaleString()}
+              </h3>
             </div>
 
             <div className="border rounded-xl p-6 bg-white shadow-md">
@@ -87,24 +97,32 @@ const Investments = () => {
               <h3 className="text-3xl font-semibold text-green-600 mt-2">
                 +₹{totalReturns.toLocaleString()}
               </h3>
-              <p className="text-green-500 text-xs">+{totalReturnPercent}%</p>
+              <p className="text-green-500 text-xs">
+                +{totalReturnPercent}%
+              </p>
             </div>
           </div>
 
-          {/* Investment List */}
+          {/* ================= INVESTMENT LIST ================= */}
           <div className="bg-white rounded-xl p-6 shadow-md">
-
             <h3 className="text-lg font-semibold mb-4">Your Investments</h3>
 
             {investments.length === 0 ? (
-              <div className="text-center py-10 text-gray-600">
-                <TrendingUp className="mx-auto text-gray-400" size={40} />
-                <p className="mt-3 font-medium">No investments yet</p>
+              /* ===== EMPTY STATE ===== */
+              <div className="flex flex-col items-center justify-center py-20 text-center">
+                <TrendingUp size={48} className="text-gray-300" />
+                <p className="mt-4 text-lg font-medium text-gray-600">
+                  No investments yet
+                </p>
+                <p className="text-sm text-gray-400 mt-1">
+                  Add your first investment to start tracking returns
+                </p>
               </div>
             ) : (
               <div className="space-y-4">
                 {investments.map((inv) => {
-                  const returns = inv.currentValue - inv.amountInvested;
+                  const returns =
+                    inv.currentValue - inv.amountInvested;
                   const returnPercent =
                     ((returns / inv.amountInvested) * 100).toFixed(2);
 
@@ -119,12 +137,15 @@ const Investments = () => {
                         </div>
 
                         <div>
-                          <p className="text-lg font-semibold">{inv.name}</p>
+                          <p className="text-lg font-semibold">
+                            {inv.name}
+                          </p>
                           <span className="text-xs bg-gray-200 px-2 py-1 rounded-full">
                             {inv.type}
                           </span>
                           <p className="text-gray-600 text-sm mt-1">
-                            Invested: ₹{inv.amountInvested.toLocaleString()}
+                            Invested: ₹
+                            {inv.amountInvested.toLocaleString()}
                           </p>
                         </div>
                       </div>
@@ -135,11 +156,13 @@ const Investments = () => {
                         </p>
                         <p
                           className={`text-sm ${
-                            returns >= 0 ? "text-green-600" : "text-red-600"
+                            returns >= 0
+                              ? "text-green-600"
+                              : "text-red-600"
                           }`}
                         >
                           {returns >= 0 ? "+" : ""}
-                          {returnPercent}% 
+                          {returnPercent}%
                         </p>
                       </div>
 

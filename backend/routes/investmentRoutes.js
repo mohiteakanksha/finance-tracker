@@ -36,4 +36,33 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+
+/* ================= DELETE INVESTMENT ================= */
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const investment = await Investment.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.userId, // ⭐ user safety check
+    });
+
+    if (!investment) {
+      return res.status(404).json({
+        success: false,
+        message: "Investment not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Investment deleted",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Error deleting investment",
+      error: err.message,
+    });
+  }
+});
+
 module.exports = router;
