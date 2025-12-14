@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { Trash2 } from "lucide-react";
@@ -15,7 +14,7 @@ const Budgets = () => {
   /* ================= FETCH budgets ================= */
   const fetchBudgets = async () => {
     try {
-      const res = await axios.get("/budgets", {
+      const res = await api.get("/budgets", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBudgets(res.data);

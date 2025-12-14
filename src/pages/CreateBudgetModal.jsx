@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { X, ChevronDown } from "lucide-react";
-import axios from "axios";
+
 import api from "../axiosConfig";
 
 const CreateBudgetModal = ({ onClose }) => {
@@ -33,7 +33,7 @@ const CreateBudgetModal = ({ onClose }) => {
     }
 
     try {
-      await axios.post(
+      await api.post(
         "/budgets/add",
         { category, amount, period },
         {

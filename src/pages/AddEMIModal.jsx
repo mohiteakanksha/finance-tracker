@@ -19,7 +19,7 @@ const AddEMIModal = ({ onClose, reloadEMIs }) => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.post(
+      await api.post(
         "/emi/add",
         {
           loanName: formData.loanName,

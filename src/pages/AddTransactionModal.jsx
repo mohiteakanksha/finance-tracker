@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
-import axios from "axios";
+
 import api from "../axiosConfig";
 
 const AddTransactionModal = ({ onClose }) => {
@@ -20,7 +20,7 @@ const AddTransactionModal = ({ onClose }) => {
   }
 
   try {
-    await axios.post(
+    await api.post(
       "/add",
       {
         type,

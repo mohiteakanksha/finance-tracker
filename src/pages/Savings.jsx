@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import AddGoalModal from "./AddGoalModal";
-import axios from "axios";
 import { Trash2 } from "lucide-react";
 import api from "../axiosConfig";
 
@@ -17,7 +16,7 @@ const Savings = () => {
   // ================= FETCH GOALS =================
   const fetchGoals = async () => {
     try {
-      const res = await axios.get("/goals", {
+      const res = await api.get("/goals", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
@@ -40,7 +39,7 @@ const Savings = () => {
     }
 
     try {
-      await axios.post(
+      await api.post(
         `/goals/add-money/${selectedGoal._id}`,
         { amount: Number(amountToAdd) },
         {
