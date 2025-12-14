@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { X } from "lucide-react";
+import api from "../axiosConfig";
 
 const AddGoalModal = ({ onClose }) => {
   const [name, setName] = useState("");
@@ -15,7 +16,7 @@ const AddGoalModal = ({ onClose }) => {
 
     try {
       const res = await axios.post(
-  "http://localhost:5000/api/goals",
+  "/goals",
   { name, targetAmount, deadline },
   {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }

@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 import AddGoalModal from "./AddGoalModal";
 import axios from "axios";
 import { Trash2 } from "lucide-react";
+import api from "../axiosConfig";
 
 const Savings = () => {
   const [openAddGoal, setOpenAddGoal] = useState(false);
@@ -16,7 +17,7 @@ const Savings = () => {
   // ================= FETCH GOALS =================
   const fetchGoals = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/goals", {
+      const res = await axios.get("/goals", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
@@ -40,7 +41,7 @@ const Savings = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/api/goals/add-money/${selectedGoal._id}`,
+        `/goals/add-money/${selectedGoal._id}`,
         { amount: Number(amountToAdd) },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -59,7 +60,7 @@ const Savings = () => {
   // ================= DELETE GOAL =================
   const deleteGoal = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/goals/${id}`, {
+      await axios.delete(`/goals/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 

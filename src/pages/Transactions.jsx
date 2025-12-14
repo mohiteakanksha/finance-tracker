@@ -13,7 +13,7 @@ const Transactions = () => {
 
   // Fetch Transactions
   useEffect(() => {
-    fetch("http://localhost:5000/api/transactions", {
+    fetch("/transactions", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

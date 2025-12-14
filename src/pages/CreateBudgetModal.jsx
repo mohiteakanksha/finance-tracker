@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { X, ChevronDown } from "lucide-react";
 import axios from "axios";
+import api from "../axiosConfig";
 
 const CreateBudgetModal = ({ onClose }) => {
   const [category, setCategory] = useState("");
@@ -33,7 +34,7 @@ const CreateBudgetModal = ({ onClose }) => {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/budgets/add",
+        "/budgets/add",
         { category, amount, period },
         {
           headers: { Authorization: `Bearer ${token}` },

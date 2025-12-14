@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { Trash2 } from "lucide-react";
 import CreateBudgetModal from "./CreateBudgetModal";
+import api from "../axiosConfig";
 
 const Budgets = () => {
   const [open, setOpen] = useState(false);
@@ -14,7 +15,7 @@ const Budgets = () => {
   /* ================= FETCH budgets ================= */
   const fetchBudgets = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/budgets", {
+      const res = await axios.get("/budgets", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBudgets(res.data);
@@ -30,7 +31,7 @@ const Budgets = () => {
   /* ================= DELETE budget ================= */
   const deleteBudget = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/budgets/${id}`, {
+      await axios.delete(`/budgets/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

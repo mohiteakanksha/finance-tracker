@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
+import api from "../axiosConfig";
 
 const AddInvestmentModal = ({ onClose, reloadInvestments }) => {
   const [name, setName] = useState("");
@@ -22,7 +23,7 @@ const AddInvestmentModal = ({ onClose, reloadInvestments }) => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/investments/add", {
+      const res = await fetch("/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

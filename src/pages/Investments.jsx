@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { Plus, TrendingUp, Trash2 } from "lucide-react";
 import AddInvestmentModal from "./AddInvestmentModal";
+import api from "../axiosConfig";
 
 const Investments = () => {
   const [open, setOpen] = useState(false);
@@ -27,7 +28,7 @@ const Investments = () => {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    const res = await fetch("http://localhost:5000/api/investments", {
+    const res = await fetch("/investments", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -39,7 +40,7 @@ const Investments = () => {
     const token = localStorage.getItem("token");
     if (!window.confirm("Delete this investment?")) return;
 
-    const res = await fetch(`http://localhost:5000/api/investments/${id}`, {
+    const res = await fetch(`/investments/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

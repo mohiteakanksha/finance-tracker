@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 import axios from "axios";
+import api from "../axiosConfig";
 
 const AddTransactionModal = ({ onClose }) => {
   const [type, setType] = useState("expense");
@@ -20,7 +21,7 @@ const AddTransactionModal = ({ onClose }) => {
 
   try {
     await axios.post(
-      "http://localhost:5000/api/transactions/add",
+      "/add",
       {
         type,
         amount: Number(amount),   // FIXED
