@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://finance-tracker-v8r3.onrender.com",
+  baseURL: "https://finance-tracker-1-r7qy.onrender.com",
 });
