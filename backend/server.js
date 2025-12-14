@@ -17,7 +17,10 @@ const analyticsRoutes = require("./routes/analyticsRoutes");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "https://finance-tracker-eta-snowy.vercel.app/", // or your Vercel URL
+  credentials: true,
+}));
 
 // ROUTES
 app.use("/api/auth", authRoutes);
