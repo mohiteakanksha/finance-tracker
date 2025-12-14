@@ -90,7 +90,7 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <img
-              src={showPassword ? "/src/assets/eye-open.png" : "/src/assets/eye-closed.png"}
+              src={showPassword ? "/eye-open.png" : "/eye-closed.png"}
               alt="toggle"
               className="w-5 h-5 cursor-pointer opacity-70 hover:opacity-100"
               onClick={() => setShowPassword(!showPassword)}
