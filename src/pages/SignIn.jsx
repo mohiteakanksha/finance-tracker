@@ -20,7 +20,7 @@ export default function Signup() {
     }
 
     try {
-      const res = await api.post("https://finance-tracker-v8r3.onrender.com/api/auth/signup", {
+      const res = await api.post("/auth/signup", {
         name,
         email,
         password,
