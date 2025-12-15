@@ -29,17 +29,23 @@ const Budgets = () => {
 
   /* ================= DELETE budget ================= */
     /* ================= DELETE budget ================= */
+/* ================= DELETE budget ================= */
 const deleteBudget = async (id) => {
   try {
+    console.log("Deleting budget:", id);
+
     await api.delete(`/budgets/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     setBudgets((prev) => prev.filter((b) => b._id !== id));
   } catch (err) {
-    console.log("Delete budget error:", err.response?.data || err);
+    console.error("Delete budget error:", err.response?.data || err);
   }
 };
+
 
 
   return (
@@ -100,11 +106,12 @@ const deleteBudget = async (id) => {
                       className="bg-white shadow-sm border rounded-xl p-6 relative"
                     >
                       <button
-                        onClick={() => deleteBudget(b._id)}
-                        className="absolute top-4 right-4 text-red-500"
-                      >
-                        <Trash2 size={18} />
-                      </button>
+  onClick={() => deleteBudget(b._id)}
+  className="absolute top-4 right-4 text-red-500"
+>
+  <Trash2 size={18} />
+</button>
+
 
                       <h3 className="text-lg font-semibold">{b.category}</h3>
                       <p className="text-gray-500">{b.period}</p>
