@@ -4,6 +4,8 @@ import Navbar from "./Navbar";
 import AddTransactionModal from "./AddTransactionModal";
 import { Navigate } from "react-router-dom";
 
+const BACKEND_URL = "https://finance-tracker-1-r7qy.onrender.com";
+
 const Transactions = () => {
   const [open, setOpen] = useState(false);
   const [transactions, setTransactions] = useState([]);
@@ -11,10 +13,14 @@ const Transactions = () => {
   const token = localStorage.getItem("token");
   if (!token) return <Navigate to="/login" />;
 
-  // Fetch Transactions
+  // ===========================
+  //     FETCH TRANSACTIONS
+  // ===========================
   useEffect(() => {
-    fetch("/transactions", {
+    fetch(`${BACKEND_URL}/api/transactions`, {
+      method: "GET",
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     })
@@ -26,7 +32,7 @@ const Transactions = () => {
           console.log("Error:", data.message);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("Fetch Error:", err));
   }, [token]);
 
   const formatDate = (dateStr) => {
@@ -44,10 +50,8 @@ const Transactions = () => {
       <div className="flex-1 flex flex-col">
         <Navbar />
 
-        {/* MAIN CONTENT */}
         <div className="p-8 mt-2 h-[calc(100vh-4rem)] overflow-y-auto pt-16 pl-64 ml-6">
-
-          {/* PAGE HEADER + BUTTON (OUTSIDE CARD) */}
+          {/* HEADER */}
           <div className="flex justify-between items-center mb-6">
             <div>
               <h2 className="text-xl font-semibold">Transactions</h2>
@@ -58,13 +62,13 @@ const Transactions = () => {
 
             <button
               onClick={() => setOpen(true)}
-              className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+              className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg"
             >
               + Add Transaction
             </button>
           </div>
 
-          {/* TRANSACTIONS CARD */}
+          {/* CARD */}
           <div className="bg-white shadow-sm border rounded-xl p-6">
             <h3 className="font-semibold text-lg mb-4">Transactions</h3>
 
@@ -78,7 +82,7 @@ const Transactions = () => {
                 {transactions.map((t) => (
                   <div
                     key={t._id}
-                    className="border rounded-lg p-4 flex justify-between items-center hover:bg-gray-50 transition"
+                    className="border rounded-lg p-4 flex justify-between items-center hover:bg-gray-50"
                   >
                     <div className="flex items-center gap-4">
                       <div
@@ -92,9 +96,7 @@ const Transactions = () => {
                       </div>
 
                       <div>
-                        <h4 className="font-semibold text-lg">
-                          {t.category}
-                        </h4>
+                        <h4 className="font-semibold text-lg">{t.category}</h4>
                         <p className="text-gray-500 text-sm">
                           {t.paymentMethod}
                         </p>
@@ -121,7 +123,14 @@ const Transactions = () => {
         </div>
       </div>
 
-      {open && <AddTransactionModal onClose={() => setOpen(false)} />}
+      {open && (
+        <AddTransactionModal
+          onClose={() => {
+            setOpen(false);
+            window.location.reload(); // ensures fresh fetch
+          }}
+        />
+      )}
     </div>
   );
 };
