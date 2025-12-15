@@ -19,12 +19,10 @@ const AddEMIModal = ({ onClose, reloadEMIs }) => {
   };
 
   const handleSubmit = async () => {
-    
     try {
-      console.log("ADD EMI CLICKED"); 
       const token = localStorage.getItem("token");
 
-      const response = await api.post(
+      await api.post(
         "/emi/add",
         {
           loanName: formData.loanName,
@@ -40,25 +38,20 @@ const AddEMIModal = ({ onClose, reloadEMIs }) => {
         }
       );
 
-      console.log("EMI Added:", response.data);
-
-      reloadEMIs(); // refresh list
-      onClose();     // close modal
+      reloadEMIs();
+      onClose();
     } catch (error) {
-      console.error(
-        "Error adding EMI:",
-        error.response?.data || error.message
-      );
+      console.error("Error adding EMI:", error.response?.data || error.message);
       alert("Failed to add EMI");
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-[999]">
-      <div className="bg-white w-[480px] rounded-xl shadow-lg p-6 animate-fadeIn">
+    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+      <div className="bg-white w-[500px] rounded-xl shadow-xl p-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Add EMI / Loan</h2>
+          <h2 className="text-lg font-semibold">Add EMI/Loan</h2>
           <X
             size={20}
             className="cursor-pointer text-gray-600 hover:text-black"
@@ -66,59 +59,78 @@ const AddEMIModal = ({ onClose, reloadEMIs }) => {
           />
         </div>
 
-        <p className="text-sm text-gray-500 mb-4">
+        <p className="text-sm text-gray-500 mb-5">
           Track your loan and EMI details
         </p>
 
         {/* Form */}
-        <div className="flex flex-col gap-4">
-          <input
-            type="text"
-            name="loanName"
-            placeholder="Loan Name"
-            value={formData.loanName}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2"
-          />
+        <div className="space-y-4">
+          <div>
+            <label className="text-sm font-medium">Loan Name *</label>
+            <input
+              type="text"
+              name="loanName"
+              placeholder="e.g. Home Loan, Car Loan"
+              value={formData.loanName}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 mt-1"
+            />
+          </div>
 
-          <input
-            type="number"
-            name="principalAmount"
-            placeholder="Principal Amount"
-            value={formData.principalAmount}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2"
-          />
+          <div>
+            <label className="text-sm font-medium">Principal Amount *</label>
+            <input
+              type="number"
+              name="principalAmount"
+              placeholder="0.00"
+              value={formData.principalAmount}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 mt-1"
+            />
+          </div>
 
-          <input
-            type="number"
-            name="interestRate"
-            placeholder="Interest Rate (%)"
-            value={formData.interestRate}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2"
-          />
+          <div>
+            <label className="text-sm font-medium">
+              Interest Rate (% p.a.) *
+            </label>
+            <input
+              type="number"
+              name="interestRate"
+              placeholder="e.g. 10.5"
+              value={formData.interestRate}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 mt-1"
+            />
+          </div>
 
-          <input
-            type="number"
-            name="tenureMonths"
-            placeholder="Tenure (Months)"
-            value={formData.tenureMonths}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2"
-          />
+          <div>
+            <label className="text-sm font-medium">
+              Tenure (Months) *
+            </label>
+            <input
+              type="number"
+              name="tenureMonths"
+              placeholder="e.g. 24"
+              value={formData.tenureMonths}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 mt-1"
+            />
+          </div>
 
-          <input
-            type="date"
-            name="startDate"
-            value={formData.startDate}
-            onChange={handleChange}
-            className="border rounded-lg px-3 py-2"
-          />
+          <div>
+            <label className="text-sm font-medium">Start Date</label>
+            <input
+              type="date"
+              name="startDate"
+              value={formData.startDate}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-3 py-2 mt-1"
+            />
+          </div>
         </div>
 
         {/* Buttons */}
-        <div className="flex justify-end mt-6 gap-3">
+        <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}
             className="px-4 py-2 rounded-lg border"
@@ -127,9 +139,9 @@ const AddEMIModal = ({ onClose, reloadEMIs }) => {
           </button>
 
           <button
-          type="button" 
+            type="button"
             onClick={handleSubmit}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white"
+            className="px-4 py-2 rounded-lg bg-black text-white"
           >
             Add EMI
           </button>
