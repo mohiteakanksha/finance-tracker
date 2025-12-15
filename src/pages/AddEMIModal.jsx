@@ -19,8 +19,9 @@ const AddEMIModal = ({ onClose, reloadEMIs }) => {
   };
 
   const handleSubmit = async () => {
-    console.log("ADD EMI CLICKED"); 
+    
     try {
+      console.log("ADD EMI CLICKED"); 
       const token = localStorage.getItem("token");
 
       const response = await api.post(
