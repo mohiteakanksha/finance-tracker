@@ -9,43 +9,44 @@ const Investments = () => {
   const [open, setOpen] = useState(false);
   const [investments, setInvestments] = useState([]);
 
-  // Calculate totals
+  // ================= CALCULATIONS =================
   const totalInvested = investments.reduce(
     (sum, i) => sum + i.amountInvested,
     0
   );
+
   const totalCurrent = investments.reduce(
     (sum, i) => sum + i.currentValue,
     0
   );
+
   const totalReturns = totalCurrent - totalInvested;
+
   const totalReturnPercent =
     totalInvested > 0
       ? ((totalReturns / totalInvested) * 100).toFixed(2)
       : 0;
 
+  // ================= LOAD INVESTMENTS =================
   const loadInvestments = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    const res = await fetch("/investments", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    const data = await res.json();
-    setInvestments(data);
+    try {
+      const res = await api.get("/investments");
+      setInvestments(res.data);
+    } catch (err) {
+      console.error("LOAD INVESTMENTS ERROR:", err);
+    }
   };
 
+  // ================= DELETE INVESTMENT =================
   const deleteInvestment = async (id) => {
-    const token = localStorage.getItem("token");
     if (!window.confirm("Delete this investment?")) return;
 
-    const res = await fetch(`/investments/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (res.ok) loadInvestments();
+    try {
+      await api.delete(`/investments/${id}`);
+      loadInvestments();
+    } catch (err) {
+      console.error("DELETE INVESTMENT ERROR:", err);
+    }
   };
 
   useEffect(() => {
@@ -59,11 +60,13 @@ const Investments = () => {
       <div className="flex-1 flex flex-col">
         <Navbar />
 
-        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto pl-64 pr-6 ml-6 ">
+        <div className="p-8 mt-16 h-[calc(100vh-4rem)] overflow-y-auto pl-64 pr-6 ml-6">
           {/* ================= HEADER ================= */}
           <div className="flex justify-between items-center mb-10">
             <div>
-              <h2 className="text-2xl font-semibold">Investment Portfolio</h2>
+              <h2 className="text-2xl font-semibold">
+                Investment Portfolio
+              </h2>
               <p className="text-gray-500 text-sm">
                 Track your investments and returns
               </p>
@@ -80,21 +83,27 @@ const Investments = () => {
           {/* ================= SUMMARY CARDS ================= */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
             <div className="border rounded-xl p-6 bg-white shadow-md">
-              <p className="text-gray-500 text-sm">Total Invested</p>
+              <p className="text-gray-500 text-sm">
+                Total Invested
+              </p>
               <h3 className="text-3xl font-semibold mt-2">
                 ₹{totalInvested.toLocaleString()}
               </h3>
             </div>
 
             <div className="border rounded-xl p-6 bg-white shadow-md">
-              <p className="text-gray-500 text-sm">Current Value</p>
+              <p className="text-gray-500 text-sm">
+                Current Value
+              </p>
               <h3 className="text-3xl font-semibold mt-2">
                 ₹{totalCurrent.toLocaleString()}
               </h3>
             </div>
 
             <div className="border rounded-xl p-6 bg-white shadow-md">
-              <p className="text-gray-500 text-sm">Total Returns</p>
+              <p className="text-gray-500 text-sm">
+                Total Returns
+              </p>
               <h3 className="text-3xl font-semibold text-green-600 mt-2">
                 +₹{totalReturns.toLocaleString()}
               </h3>
@@ -106,10 +115,11 @@ const Investments = () => {
 
           {/* ================= INVESTMENT LIST ================= */}
           <div className="bg-white rounded-xl p-6 shadow-md">
-            <h3 className="text-lg font-semibold mb-4">Your Investments</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              Your Investments
+            </h3>
 
             {investments.length === 0 ? (
-              /* ===== EMPTY STATE ===== */
               <div className="flex flex-col items-center justify-center py-20 text-center">
                 <TrendingUp size={48} className="text-gray-300" />
                 <p className="mt-4 text-lg font-medium text-gray-600">
@@ -124,8 +134,11 @@ const Investments = () => {
                 {investments.map((inv) => {
                   const returns =
                     inv.currentValue - inv.amountInvested;
-                  const returnPercent =
-                    ((returns / inv.amountInvested) * 100).toFixed(2);
+
+                  const returnPercent = (
+                    (returns / inv.amountInvested) *
+                    100
+                  ).toFixed(2);
 
                   return (
                     <div
