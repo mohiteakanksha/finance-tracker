@@ -19,6 +19,7 @@ const AddEMIModal = ({ onClose, reloadEMIs }) => {
   };
 
   const handleSubmit = async () => {
+    console.log("ADD EMI CLICKED"); 
     try {
       const token = localStorage.getItem("token");
 
@@ -125,6 +126,7 @@ const AddEMIModal = ({ onClose, reloadEMIs }) => {
           </button>
 
           <button
+          type="button" 
             onClick={handleSubmit}
             className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white"
           >
