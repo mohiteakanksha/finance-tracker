@@ -93,7 +93,7 @@ export default function Signup() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <img
-              src={showPassword ? "/src/assets/eye-open.png" : "/src/assets/eye-closed.png"}
+              src={showPassword ? "/eye-open.png" : "/eye-closed.png"}
               alt="toggle"
               className="w-5 h-5 cursor-pointer opacity-70 hover:opacity-100"
               onClick={() => setShowPassword(!showPassword)}
@@ -105,7 +105,7 @@ export default function Signup() {
             onClick={handleSignup}
             className="w-full mt-6 py-3 rounded-xl text-white font-medium bg-gradient-to-r from-purple-500 to-indigo-600 shadow-md hover:opacity-90 transition"
           >
-            Sign Up
+            Create Account
           </button>
 
           <p className="text-center text-sm text-gray-600 mt-4">
