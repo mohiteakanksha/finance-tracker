@@ -21,7 +21,7 @@ const AddTransactionModal = ({ onClose }) => {
 
   try {
     await api.post(
-      "/add",
+      "/transactions/add",
       {
         type,
         amount: Number(amount),   // FIXED
