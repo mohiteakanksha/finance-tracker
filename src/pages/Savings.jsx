@@ -57,18 +57,19 @@ const Savings = () => {
   };
 
   // ================= DELETE GOAL =================
-  const deleteGoal = async (id) => {
-    try {
-      await axios.delete(`/goals/${id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+ const deleteGoal = async (id) => {
+  try {
+    await api.delete(`/goals/${id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
 
-      setGoals((prev) => prev.filter((g) => g._id !== id));
-    } catch (err) {
-      console.log("Delete Goal Error:", err);
-      alert("Failed to delete goal");
-    }
-  };
+    setGoals((prev) => prev.filter((g) => g._id !== id));
+  } catch (err) {
+    console.log("Delete Goal Error:", err);
+    alert("Failed to delete goal");
+  }
+};
+
 
   return (
     <div className="h-screen flex w-screen bg-gradient-to-br from-white to-purple-100">
