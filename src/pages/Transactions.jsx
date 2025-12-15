@@ -3,8 +3,7 @@ import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import AddTransactionModal from "./AddTransactionModal";
 import { Navigate } from "react-router-dom";
-
-const BACKEND_URL = "https://finance-tracker-1-r7qy.onrender.com";
+import api from "../axiosConfig"; // ✅ ADD THIS
 
 const Transactions = () => {
   const [open, setOpen] = useState(false);
@@ -17,23 +16,17 @@ const Transactions = () => {
   //     FETCH TRANSACTIONS
   // ===========================
   useEffect(() => {
-    fetch(`${BACKEND_URL}/api/transactions`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setTransactions(data.data);
+    api
+      .get("/transactions") // ✅ CORRECT API
+      .then((res) => {
+        if (res.data.success) {
+          setTransactions(res.data.data);
         } else {
-          console.log("Error:", data.message);
+          console.log("Error:", res.data.message);
         }
       })
-      .catch((err) => console.log("Fetch Error:", err));
-  }, [token]);
+      .catch((err) => console.log("Fetch Transactions Error:", err));
+  }, []);
 
   const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString("en-GB", {
@@ -50,8 +43,10 @@ const Transactions = () => {
       <div className="flex-1 flex flex-col">
         <Navbar />
 
+        {/* MAIN CONTENT */}
         <div className="p-8 mt-2 h-[calc(100vh-4rem)] overflow-y-auto pt-16 pl-64 ml-6">
-          {/* HEADER */}
+
+          {/* PAGE HEADER + BUTTON */}
           <div className="flex justify-between items-center mb-6">
             <div>
               <h2 className="text-xl font-semibold">Transactions</h2>
@@ -62,13 +57,13 @@ const Transactions = () => {
 
             <button
               onClick={() => setOpen(true)}
-              className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg"
+              className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
             >
               + Add Transaction
             </button>
           </div>
 
-          {/* CARD */}
+          {/* TRANSACTIONS CARD */}
           <div className="bg-white shadow-sm border rounded-xl p-6">
             <h3 className="font-semibold text-lg mb-4">Transactions</h3>
 
@@ -82,7 +77,7 @@ const Transactions = () => {
                 {transactions.map((t) => (
                   <div
                     key={t._id}
-                    className="border rounded-lg p-4 flex justify-between items-center hover:bg-gray-50"
+                    className="border rounded-lg p-4 flex justify-between items-center hover:bg-gray-50 transition"
                   >
                     <div className="flex items-center gap-4">
                       <div
@@ -96,7 +91,9 @@ const Transactions = () => {
                       </div>
 
                       <div>
-                        <h4 className="font-semibold text-lg">{t.category}</h4>
+                        <h4 className="font-semibold text-lg">
+                          {t.category}
+                        </h4>
                         <p className="text-gray-500 text-sm">
                           {t.paymentMethod}
                         </p>
@@ -123,14 +120,7 @@ const Transactions = () => {
         </div>
       </div>
 
-      {open && (
-        <AddTransactionModal
-          onClose={() => {
-            setOpen(false);
-            window.location.reload(); // ensures fresh fetch
-          }}
-        />
-      )}
+      {open && <AddTransactionModal onClose={() => setOpen(false)} />}
     </div>
   );
 };
