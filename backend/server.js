@@ -18,7 +18,7 @@ const analyticsRoutes = require("./routes/analyticsRoutes");
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: "https://finance-tracker-drab-seven.vercel.app/", // or your Vercel URL
+  origin: "https://finance-tracker-drab-seven.vercel.app", // or your Vercel URL
   credentials: true,
 }));
 
