@@ -28,12 +28,9 @@ const Budgets = () => {
   }, []);
 
   /* ================= DELETE budget ================= */
-  const deleteBudget = async (id) => {
+    const deleteBudget = async (id) => {
     try {
-      await axios.delete(`/budgets/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
+      await api.delete(`/budgets/${id}`);
       setBudgets((prev) => prev.filter((b) => b._id !== id));
     } catch (err) {
       console.log("Delete budget error:", err);
