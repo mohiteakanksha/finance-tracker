@@ -23,7 +23,7 @@ const AddInvestmentModal = ({ onClose, reloadInvestments }) => {
   };
 
   try {
-    const res = await api.post(
+    await api.post(
       "/investments/add",
       investmentData,
       {
