@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
-import axios from "../axiosConfig";
+import api from "../axiosConfig";
 
 const AddEMIModal = ({ onClose, reloadEMIs }) => {
   const [formData, setFormData] = useState({
@@ -20,20 +20,20 @@ const AddEMIModal = ({ onClose, reloadEMIs }) => {
       const token = localStorage.getItem("token");
 
       await api.post(
-        "/emi/add",
-        {
-          loanName: formData.loanName,
-          principalAmount: Number(formData.principalAmount),
-          interestRate: Number(formData.interestRate),
-          tenureMonths: Number(formData.tenureMonths),
-          startDate: formData.startDate,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  "/emi/add",
+  {
+    loanName: formData.loanName,
+    principalAmount: Number(formData.principalAmount),
+    interestRate: Number(formData.interestRate),
+    tenureMonths: Number(formData.tenureMonths),
+    startDate: formData.startDate,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       reloadEMIs(); // refresh EMI list on main page
       onClose();
