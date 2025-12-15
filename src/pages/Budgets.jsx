@@ -28,14 +28,19 @@ const Budgets = () => {
   }, []);
 
   /* ================= DELETE budget ================= */
-    const deleteBudget = async (id) => {
-    try {
-      await api.delete(`/budgets/${id}`);
-      setBudgets((prev) => prev.filter((b) => b._id !== id));
-    } catch (err) {
-      console.log("Delete budget error:", err);
-    }
-  };
+    /* ================= DELETE budget ================= */
+const deleteBudget = async (id) => {
+  try {
+    await api.delete(`/budgets/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    setBudgets((prev) => prev.filter((b) => b._id !== id));
+  } catch (err) {
+    console.log("Delete budget error:", err.response?.data || err);
+  }
+};
+
 
   return (
     <div className="min-h-screen w-screen flex bg-gradient-to-br from-white to-purple-100">
