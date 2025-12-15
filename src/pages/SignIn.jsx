@@ -28,7 +28,7 @@ export default function Signup() {
 
       if (res.data.success) {
         alert("Account created! Please login.");
-        navigate("/");
+        navigate("/login");
       } else {
         alert(res.data.message);
       }
