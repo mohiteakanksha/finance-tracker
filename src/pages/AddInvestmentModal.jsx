@@ -12,39 +12,38 @@ const AddInvestmentModal = ({ onClose, reloadInvestments }) => {
   const token = localStorage.getItem("token");
 
   const handleAddInvestment = async () => {
-    if (!token) return alert("Login again!");
+  if (!token) return alert("Login again!");
 
-    const investmentData = {
-      name,
-      type,
-      amountInvested: Number(invested),
-      currentValue: Number(currentValue),
-      investmentDate: date,
-    };
+  const investmentData = {
+    name,
+    type,
+    amountInvested: Number(invested),
+    currentValue: Number(currentValue),
+    investmentDate: date,
+  };
 
-    try {
-      const res = await fetch("/add", {
-        method: "POST",
+  try {
+    const res = await api.post(
+      "/investments/add",
+      investmentData,
+      {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(investmentData),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("Investment Added!");
-        reloadInvestments();   // ⭐ Refresh list automatically
-        onClose();
-      } else {
-        alert(data.message);
       }
-    } catch (error) {
-      alert("Server Error");
-    }
-  };
+    );
+
+    alert("Investment Added!");
+    reloadInvestments();
+    onClose();
+  } catch (error) {
+    console.error(error);
+    alert(
+      error.response?.data?.message || "Server Error"
+    );
+  }
+};
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
