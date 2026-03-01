@@ -3,7 +3,8 @@ import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import AddTransactionModal from "./AddTransactionModal";
 import { Navigate } from "react-router-dom";
-import api from "../axiosConfig"; // ✅ ADD THIS
+import { Trash2 } from "lucide-react";
+import api from "../axiosConfig";
 
 const Transactions = () => {
   const [open, setOpen] = useState(false);
@@ -13,20 +14,37 @@ const Transactions = () => {
   if (!token) return <Navigate to="/login" />;
 
   // ===========================
-  //     FETCH TRANSACTIONS
+  // FETCH TRANSACTIONS
   // ===========================
   useEffect(() => {
     api
-      .get("/transactions") // ✅ CORRECT API
+      .get("/transactions")
       .then((res) => {
         if (res.data.success) {
           setTransactions(res.data.data);
-        } else {
-          console.log("Error:", res.data.message);
         }
       })
-      .catch((err) => console.log("Fetch Transactions Error:", err));
-  }, []);
+      .catch((err) =>
+        console.log("Fetch Transactions Error:", err)
+      );
+  }, [transactions]);
+
+  // ===========================
+  // DELETE TRANSACTION
+  // ===========================
+  const handleDelete = async (id) => {
+    try {
+      const res = await api.delete(`/transactions/${id}`);
+
+      if (res.data.success) {
+        setTransactions(
+          transactions.filter((t) => t._id !== id)
+        );
+      }
+    } catch (error) {
+      console.log("Delete Error:", error);
+    }
+  };
 
   const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString("en-GB", {
@@ -43,10 +61,9 @@ const Transactions = () => {
       <div className="flex-1 flex flex-col">
         <Navbar />
 
-        {/* MAIN CONTENT */}
         <div className="p-8 mt-2 h-[calc(100vh-4rem)] overflow-y-auto pt-16 pl-64 ml-6">
 
-          {/* PAGE HEADER + BUTTON */}
+          {/* HEADER */}
           <div className="flex justify-between items-center mb-6">
             <div>
               <h2 className="text-xl font-semibold">Transactions</h2>
@@ -57,20 +74,24 @@ const Transactions = () => {
 
             <button
               onClick={() => setOpen(true)}
-              className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+              className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-lg"
             >
               + Add Transaction
             </button>
           </div>
 
-          {/* TRANSACTIONS CARD */}
+          {/* CARD */}
           <div className="bg-white shadow-sm border rounded-xl p-6">
-            <h3 className="font-semibold text-lg mb-4">Transactions</h3>
+            <h3 className="font-semibold text-lg mb-4">
+              Transactions
+            </h3>
 
             {transactions.length === 0 ? (
               <div className="text-center text-gray-500 py-12">
-                <p className="text-lg font-medium">No transactions found</p>
-                <p>Add your first transaction to get started</p>
+                <p className="text-lg font-medium">
+                  No transactions found
+                </p>
+                <p>Add your first transaction</p>
               </div>
             ) : (
               <div className="flex flex-col gap-4">
@@ -79,12 +100,15 @@ const Transactions = () => {
                     key={t._id}
                     className="border rounded-lg p-4 flex justify-between items-center hover:bg-gray-50 transition"
                   >
+                    {/* LEFT SIDE */}
                     <div className="flex items-center gap-4">
                       <div
                         className="w-12 h-12 rounded-full flex items-center justify-center text-white"
                         style={{
                           background:
-                            t.type === "income" ? "#16a34a" : "#ef4444",
+                            t.type === "income"
+                              ? "#16a34a"
+                              : "#ef4444",
                         }}
                       >
                         {t.type === "income" ? "↓" : "↑"}
@@ -94,24 +118,41 @@ const Transactions = () => {
                         <h4 className="font-semibold text-lg">
                           {t.category}
                         </h4>
+
+                        {/* NOTES */}
                         <p className="text-gray-500 text-sm">
-                          {t.paymentMethod}
+                          {t.notes}
                         </p>
+
                         <p className="text-gray-400 text-xs">
                           {formatDate(t.date)}
                         </p>
                       </div>
                     </div>
 
-                    <p
-                      className={`text-lg font-semibold ${
-                        t.type === "expense"
-                          ? "text-red-500"
-                          : "text-green-600"
-                      }`}
-                    >
-                      {t.type === "expense" ? "-" : "+"}₹{t.amount}
-                    </p>
+                    {/* RIGHT SIDE */}
+                    <div className="flex items-center gap-6">
+                      <p
+                        className={`text-lg font-semibold ${
+                          t.type === "expense"
+                            ? "text-red-500"
+                            : "text-green-600"
+                        }`}
+                      >
+                        {t.type === "expense" ? "-" : "+"}₹{t.amount}
+                      </p>
+
+                      {/* LUCIDE DELETE ICON */}
+                      <button
+                        onClick={() => handleDelete(t._id)}
+                        className="p-2 rounded-full hover:bg-red-100 transition"
+                      >
+                        <Trash2
+                          size={18}
+                          className="text-red-500 hover:text-red-700"
+                        />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -120,7 +161,11 @@ const Transactions = () => {
         </div>
       </div>
 
-      {open && <AddTransactionModal onClose={() => setOpen(false)} />}
+      {open && (
+        <AddTransactionModal
+          onClose={() => setOpen(false)}
+        />
+      )}
     </div>
   );
 };

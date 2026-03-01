@@ -1,31 +1,49 @@
 import React, { useState } from "react";
-import { X, ChevronDown } from "lucide-react";
+import {
+  X,
+  ChevronDown,
+  Utensils,
+  Home,
+  ShoppingCart,
+  HeartPulse,
+  GraduationCap,
+  CreditCard,
+  Car,
+  Tv,
+  Plane,
+  Receipt,
+  Wallet,
+} from "lucide-react";
 
 import api from "../axiosConfig";
 
 const CreateBudgetModal = ({ onClose }) => {
   const [category, setCategory] = useState("");
   const [showCategoryList, setShowCategoryList] = useState(false);
-
   const [amount, setAmount] = useState("");
   const [period, setPeriod] = useState("Monthly");
   const [showPeriodList, setShowPeriodList] = useState(false);
 
+  // ✅ Categories with Icons
   const categories = [
-    "Food",
-    "Travel",
-    "Shopping",
-    "Bills",
-    "Groceries",
-    "Entertainment",
-    "Health",
+    { name: "Food", icon: <Utensils size={16} /> },
+    { name: "Groceries", icon: <ShoppingCart size={16} /> },
+    { name: "Rent", icon: <Home size={16} /> },
+    { name: "Travel", icon: <Plane size={16} /> },
+    { name: "Subscriptions", icon: <Tv size={16} /> },
+    { name: "Education", icon: <GraduationCap size={16} /> },
+    { name: "EMI", icon: <CreditCard size={16} /> },
+    { name: "Transport", icon: <Car size={16} /> },
+    { name: "Health", icon: <HeartPulse size={16} /> },
+    { name: "Shopping", icon: <ShoppingCart size={16} /> },
+    { name: "Bills", icon: <Receipt size={16} /> },
+    { name: "Others", icon: <Wallet size={16} /> },
   ];
 
   const periods = ["Monthly", "Weekly", "Yearly"];
 
   const token = localStorage.getItem("token");
 
-  // Submit Budget
   const handleSubmit = async () => {
     if (!category || !amount) {
       alert("Please fill all fields");
@@ -35,7 +53,7 @@ const CreateBudgetModal = ({ onClose }) => {
     try {
       await api.post(
         "/budgets/add",
-        { category, amount, period },
+        { category, amount: Number(amount), period },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -43,7 +61,6 @@ const CreateBudgetModal = ({ onClose }) => {
 
       alert("Budget added successfully");
       onClose();
-
     } catch (error) {
       console.error(error);
       alert("Error adding budget");
@@ -60,11 +77,12 @@ const CreateBudgetModal = ({ onClose }) => {
         </button>
 
         <h2 className="text-xl font-semibold">Create Budget</h2>
-        <p className="text-gray-500 text-sm">Set spending limits for categories</p>
+        <p className="text-gray-500 text-sm">
+          Set spending limits for categories
+        </p>
 
-        {/* Form */}
         <div className="mt-5 flex flex-col gap-4">
-          
+
           {/* Category */}
           <div className="relative">
             <label className="text-sm font-medium">Category *</label>
@@ -78,17 +96,18 @@ const CreateBudgetModal = ({ onClose }) => {
             </div>
 
             {showCategoryList && (
-              <div className="absolute bg-white border rounded-lg w-full mt-1 shadow-md">
+              <div className="absolute bg-white border rounded-lg w-full mt-1 shadow-md max-h-48 overflow-y-auto z-10">
                 {categories.map((cat) => (
                   <div
-                    key={cat}
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    key={cat.name}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
                     onClick={() => {
-                      setCategory(cat);
+                      setCategory(cat.name);
                       setShowCategoryList(false);
                     }}
                   >
-                    {cat}
+                    {cat.icon}
+                    {cat.name}
                   </div>
                 ))}
               </div>
@@ -120,7 +139,7 @@ const CreateBudgetModal = ({ onClose }) => {
             </div>
 
             {showPeriodList && (
-              <div className="absolute bg-white border rounded-lg w-full mt-1 shadow-md">
+              <div className="absolute bg-white border rounded-lg w-full mt-1 shadow-md z-10">
                 {periods.map((per) => (
                   <div
                     key={per}

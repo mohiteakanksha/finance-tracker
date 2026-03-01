@@ -36,7 +36,7 @@ export default function Dashboard() {
   const [categories, setCategories] = useState([]); // includes type
   const [incomeSources, setIncomeSources] = useState([]);
   const [comparison, setComparison] = useState(null);
-  const [txCount, setTxCount] = useState(0);
+
   const [loading, setLoading] = useState(true);
 
   // Fetch overview (monthly aggregates)
@@ -120,24 +120,10 @@ export default function Dashboard() {
   }, []);
 
   // Fetch transaction count (try /transactions/count then fallback)
- useEffect(() => {
-  const fetchTxCount = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await api.get("/transactions/count", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
 
-      setTxCount(res.data?.count || 0);
-    } catch (err) {
-      console.error("Transaction count error:", err);
-      setTxCount(0);
-    }
-  };
-
-  fetchTxCount();
-}, []);
-
+// 🔥 Current Month Income
+const currentMonthIndex = new Date().getMonth();
+const currentMonthIncome = months[currentMonthIndex]?.income || 0;
 
   // Helpers
   const sumArr = (arr = [], key = "totalAmount") =>
@@ -208,7 +194,15 @@ export default function Dashboard() {
       : "No comparison data available.",
     `Great job! You saved ${formatCurrency(savings)} this month.`
   ];
+// 🔥 Dynamic Greeting Based On Time
+const getGreeting = () => {
+  const hour = new Date().getHours();
 
+  if (hour >= 5 && hour < 12) return "Good Morning!";
+  if (hour >= 12 && hour < 17) return "Good Afternoon!";
+  if (hour >= 17 && hour < 21) return "Good Evening!";
+  return "Good Night!";
+};
   return (
     <div className="min-h-screen w-screen bg-gradient-to-br from-white to-purple-100 flex flex-col">
 
@@ -226,7 +220,7 @@ export default function Dashboard() {
 
           {/* HEADER CARD */}
           <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white p-6 rounded-2xl shadow">
-            <h2 className="text-2xl font-semibold">Good Morning!</h2>
+            <h2 className="text-2xl font-semibold">{getGreeting()}</h2>
             <p className="opacity-90">Here's your financial overview for today</p>
           </div>
 
@@ -264,48 +258,31 @@ export default function Dashboard() {
             />
 
             <StatCard
-              title="Transactions"
-              amount={txCount}
-              meta={<span className="text-sm text-gray-500">This month</span>}
-              icon={<Wallet size={26} />}
-            />
+  title="Current Month Income"
+  amount={formatCurrency(currentMonthIncome)}
+  meta={<span className="text-sm text-gray-500">This month</span>}
+  icon={<Wallet size={26} />}
+/>
           </div>
 
           {/* CHART SECTION */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
 
             {/* Income vs Expense Chart */}
+           
+
+            {/* Spending Category Chart */}
+            {/* Spending Category Chart */}
             <div className="bg-white rounded-2xl p-6 shadow h-96">
-              <h3 className="font-semibold">Income vs Expense Trend</h3>
-              <p className="text-gray-500 text-sm mb-2">Last 6 months overview</p>
+               <h3 className="font-semibold">Spending by Category</h3>
+               <p className="text-gray-500 text-sm mb-2">Top categories this month</p>
 
-              <div className="w-full h-72">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={last6Months}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip formatter={(v) => formatCurrency(v)} />
-                    <Legend verticalAlign="bottom" height={36} />
-                    <Line type="monotone" dataKey="expense" name="Expense" stroke="#EF4444" strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="income" name="Income" stroke="#22C55E" strokeWidth={2} dot={{ r: 3 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-
-            {/* Spending Category Chart */}
-            {/* Spending Category Chart */}
-<div className="bg-white rounded-2xl p-6 shadow h-96">
-  <h3 className="font-semibold">Spending by Category</h3>
-  <p className="text-gray-500 text-sm mb-2">Top categories this month</p>
-
-   <div className="flex flex-col items-center justify-center h-full">
-    <div style={{ width: "100%", height: 300 }}>
-      <ResponsiveContainer width="100%" height="100%">
-  <PieChart>
-    <Pie
-      data={pieExpenseData}
+                <div className="flex flex-col items-center justify-center h-full">
+                   <div style={{ width: "100%", height: 300 }}>
+                     <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                            <Pie
+                         data={pieExpenseData}
       dataKey="value"
       nameKey="name"
       cx="50%"
@@ -333,7 +310,7 @@ export default function Dashboard() {
   </div>
 </div>
 
-          </div>
+         
 
           {/* INSIGHTS */}
           <div className="bg-white rounded-2xl p-6 shadow mt-6">
@@ -351,6 +328,7 @@ export default function Dashboard() {
                 </div>
               ))}
             </div>
+             </div>
           </div>
 
         </main>

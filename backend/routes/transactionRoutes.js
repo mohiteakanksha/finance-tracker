@@ -74,6 +74,39 @@ router.get("/count", auth, async (req, res) => {
     res.status(500).json({ message: "Error counting transactions" });
   }
 });
+// ===========================
+//     DELETE TRANSACTION
+// ===========================
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const { id } = req.params;
 
+    const transaction = await Transaction.findOne({
+      _id: id,
+      userId: req.userId,
+    });
+
+    if (!transaction) {
+      return res.status(404).json({
+        success: false,
+        message: "Transaction not found",
+      });
+    }
+
+    await transaction.deleteOne();
+
+    res.json({
+      success: true,
+      message: "Transaction deleted successfully",
+    });
+
+  } catch (error) {
+    console.log("Delete Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
 
 module.exports = router;
