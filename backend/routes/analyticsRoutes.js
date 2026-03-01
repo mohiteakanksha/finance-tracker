@@ -45,24 +45,35 @@ router.get("/overview", verifyToken, async (req, res) => {
 /* ------------------------------------------------------
    2. EXPENSE CATEGORIES BREAKDOWN
 --------------------------------------------------------- */
+/* ------------------------------------------------------
+   2. EXPENSE CATEGORIES BREAKDOWN (CURRENT MONTH ONLY)
+--------------------------------------------------------- */
 router.get("/categories", verifyToken, async (req, res) => {
   try {
     const userId = req.userId;
+
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
 
     const data = await Transaction.aggregate([
       {
         $match: {
           userId: new mongoose.Types.ObjectId(userId),
-          type: "expense"
-        }
+          type: "expense",
+          date: {
+            $gte: startOfMonth,
+            $lte: endOfMonth,
+          },
+        },
       },
       {
         $group: {
           _id: "$category",
-          totalAmount: { $sum: "$amount" }
-        }
+          totalAmount: { $sum: "$amount" },
+        },
       },
-      { $sort: { totalAmount: -1 } }
+      { $sort: { totalAmount: -1 } },
     ]);
 
     res.json(data);
@@ -71,28 +82,38 @@ router.get("/categories", verifyToken, async (req, res) => {
   }
 });
 
-
 /* ------------------------------------------------------
    3. INCOME SOURCE BREAKDOWN   (MISSING FROM YOUR BACKEND)
+--------------------------------------------------------- */
+/* ------------------------------------------------------
+   3. INCOME SOURCE BREAKDOWN (CURRENT MONTH ONLY)
 --------------------------------------------------------- */
 router.get("/income-sources", verifyToken, async (req, res) => {
   try {
     const userId = req.userId;
 
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+
     const data = await Transaction.aggregate([
       {
         $match: {
           userId: new mongoose.Types.ObjectId(userId),
-          type: "income"
-        }
+          type: "income",
+          date: {
+            $gte: startOfMonth,
+            $lte: endOfMonth,
+          },
+        },
       },
       {
         $group: {
           _id: "$category",
-          totalAmount: { $sum: "$amount" }
-        }
+          totalAmount: { $sum: "$amount" },
+        },
       },
-      { $sort: { totalAmount: -1 } }
+      { $sort: { totalAmount: -1 } },
     ]);
 
     res.json(data);
@@ -100,7 +121,6 @@ router.get("/income-sources", verifyToken, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 /* ------------------------------------------------------
    4. MONTH-OVER-MONTH COMPARISON
