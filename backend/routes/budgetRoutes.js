@@ -27,36 +27,43 @@ router.post("/add", auth, async (req, res) => {
 /* =========================
    GET BUDGETS + AUTO SPENT
 ========================= */
+/* =========================
+   GET BUDGETS + AUTO SPENT (MONTHLY RESET FIXED)
+========================= */
 router.get("/", auth, async (req, res) => {
   try {
     const budgets = await Budget.find({ userId: req.userId });
 
     const result = [];
 
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
     for (const budget of budgets) {
       const spentAgg = await Transaction.aggregate([
         {
           $match: {
-            userId: budget.userId, // 🔥 ObjectId-safe
+            userId: budget.userId,
             category: budget.category,
+            type: "expense", // only expenses
+            date: {
+              $gte: startOfMonth,
+              $lte: endOfMonth,
+            },
           },
         },
         {
           $group: {
-            _id: "$type",
+            _id: null,
             total: { $sum: "$amount" },
           },
         },
       ]);
 
-      // extract only expense total
-      const expenseGroup = spentAgg.find(
-        (g) => g._id === "expense"
-      );
-
       result.push({
         ...budget.toObject(),
-        spent: expenseGroup ? expenseGroup.total : 0,
+        spent: spentAgg[0]?.total || 0,
       });
     }
 
@@ -66,7 +73,6 @@ router.get("/", auth, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 /* =========================
    DELETE BUDGET
