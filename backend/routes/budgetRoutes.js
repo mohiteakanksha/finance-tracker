@@ -30,6 +30,9 @@ router.post("/add", auth, async (req, res) => {
 /* =========================
    GET BUDGETS + AUTO SPENT (MONTHLY RESET FIXED)
 ========================= */
+/* =========================
+   GET BUDGETS + AUTO SPENT (MONTHLY RESET WORKING)
+========================= */
 router.get("/", auth, async (req, res) => {
   try {
     const budgets = await Budget.find({ userId: req.userId });
@@ -37,8 +40,22 @@ router.get("/", auth, async (req, res) => {
     const result = [];
 
     const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+    // Start of month (00:00:00)
+    const startOfMonth = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      1,
+      0, 0, 0
+    );
+
+    // End of month (23:59:59)
+    const endOfMonth = new Date(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      0,
+      23, 59, 59
+    );
 
     for (const budget of budgets) {
       const spentAgg = await Transaction.aggregate([
@@ -46,7 +63,7 @@ router.get("/", auth, async (req, res) => {
           $match: {
             userId: budget.userId,
             category: budget.category,
-            type: "expense", // only expenses
+            type: "expense",
             date: {
               $gte: startOfMonth,
               $lte: endOfMonth,
@@ -63,7 +80,7 @@ router.get("/", auth, async (req, res) => {
 
       result.push({
         ...budget.toObject(),
-        spent: spentAgg[0]?.total || 0,
+        spent: spentAgg.length > 0 ? spentAgg[0].total : 0,
       });
     }
 
@@ -73,7 +90,6 @@ router.get("/", auth, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 /* =========================
    DELETE BUDGET
 ========================= */
