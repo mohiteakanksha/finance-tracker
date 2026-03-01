@@ -310,7 +310,7 @@ const getGreeting = () => {
   </div>
 </div>
 
-          </div>
+          
 
           {/* INSIGHTS */}
           <div className="bg-white rounded-2xl p-6 shadow mt-6">
@@ -329,7 +329,7 @@ const getGreeting = () => {
               ))}
             </div>
           </div>
-
+</div>
         </main>
       </div>
     </div>
