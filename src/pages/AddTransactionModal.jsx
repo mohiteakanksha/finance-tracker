@@ -42,7 +42,6 @@ const AddTransactionModal = ({ onClose }) => {
     { name: "Education", icon: <GraduationCap size={16} /> },
     { name: "Subscriptions", icon: <Tv size={16} /> },
     { name: "EMI", icon: <CreditCard size={16} /> },
-    { name: "INVESTMENTS", icon: <TrendingUp size={16} /> },
     { name: "Others", icon: <Wallet size={16} /> },
   ];
 
@@ -53,7 +52,6 @@ const AddTransactionModal = ({ onClose }) => {
     { name: "Business", icon: <TrendingUp size={16} /> },
     { name: "Investments", icon: <TrendingUp size={16} /> },
     { name: "Bonus", icon: <Gift size={16} /> },
-    { name: "Family/Friends", icon: <Family size={16} /> },
     { name: "Other Income", icon: <Wallet size={16} /> },
   ];
 
@@ -196,9 +194,9 @@ const AddTransactionModal = ({ onClose }) => {
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
           >
-            <option>UPI</option>
-            <option>Card</option>
             <option>Cash</option>
+            <option>Card</option>
+            <option>UPI</option>
           </select>
         </div>
 
