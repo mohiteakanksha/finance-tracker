@@ -38,6 +38,7 @@ export default function Dashboard() {
   const [comparison, setComparison] = useState(null);
 
   const [loading, setLoading] = useState(true);
+    
 
   // Fetch overview (monthly aggregates)
   useEffect(() => {
@@ -216,16 +217,16 @@ const getGreeting = () => {
         <Sidebar />
 
         {/* MAIN CONTENT  */}
-        <main className="flex-1 mt-2 p-12 overflow-y-auto pt-16 pl-64 ml-6">
+        <main className="flex-1 mt-2 p-4 md:p-12 overflow-y-auto pt-16 md:pl-64 md:ml-6">
 
           {/* HEADER CARD */}
           <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white p-6 rounded-2xl shadow">
-            <h2 className="text-2xl font-semibold">{getGreeting()}</h2>
+            <h2 className="text-xl md:text-2xl font-semibold">{getGreeting()}</h2>
             <p className="opacity-90">Here's your financial overview for today</p>
           </div>
 
           {/* STAT CARDS */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
             <StatCard
               title="Total Income"
               amount={formatCurrency(totalIncome)}
@@ -266,14 +267,14 @@ const getGreeting = () => {
           </div>
 
           {/* CHART SECTION */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
 
             {/* Income vs Expense Chart */}
            
 
             {/* Spending Category Chart */}
             {/* Spending Category Chart */}
-            <div className="bg-white rounded-2xl p-6 shadow h-96">
+            <div className="bg-white rounded-2xl p-4 md:p-6 shadow min-h-[350px]">
                <h3 className="font-semibold">Spending by Category</h3>
                <p className="text-gray-500 text-sm mb-2">Top categories this month</p>
 
