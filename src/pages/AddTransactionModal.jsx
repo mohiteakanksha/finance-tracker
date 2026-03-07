@@ -53,7 +53,7 @@ const AddTransactionModal = ({ onClose }) => {
     { name: "Business", icon: <TrendingUp size={16} /> },
     { name: "Investments", icon: <TrendingUp size={16} /> },
     { name: "Bonus", icon: <Gift size={16} /> },
-    { name: "Family/Friends", icon: <Gift size={16} /> },
+    { name: "Family/Friends", icon: <Family size={16} /> },
     { name: "Other Income", icon: <Wallet size={16} /> },
   ];
 
