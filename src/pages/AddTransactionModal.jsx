@@ -24,7 +24,7 @@ const AddTransactionModal = ({ onClose }) => {
   const [category, setCategory] = useState("");
   const [showCategoryList, setShowCategoryList] = useState(false);
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [paymentMethod, setPaymentMethod] = useState("Cash");
+  const [paymentMethod, setPaymentMethod] = useState("UPI");
   const [notes, setNotes] = useState("");
 
   const token = localStorage.getItem("token");
@@ -42,6 +42,7 @@ const AddTransactionModal = ({ onClose }) => {
     { name: "Education", icon: <GraduationCap size={16} /> },
     { name: "Subscriptions", icon: <Tv size={16} /> },
     { name: "EMI", icon: <CreditCard size={16} /> },
+    { name: "Investment", icon: <TrendingUp size={16} /> },
     { name: "Others", icon: <Wallet size={16} /> },
   ];
 
@@ -52,6 +53,7 @@ const AddTransactionModal = ({ onClose }) => {
     { name: "Business", icon: <TrendingUp size={16} /> },
     { name: "Investments", icon: <TrendingUp size={16} /> },
     { name: "Bonus", icon: <Gift size={16} /> },
+    { name: "Family/Friends", icon: <Gift size={16} /> },
     { name: "Other Income", icon: <Wallet size={16} /> },
   ];
 
