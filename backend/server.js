@@ -33,7 +33,12 @@ app.use("/api/subscriptions", subscriptionRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
 
-
+app.get("/api/health", (req, res) =>
+  res.json({
+    status: "OK",
+    timestamp: new Date().toISOString(),
+  }),
+);
 
 
 
